@@ -1,0 +1,13 @@
+<b>👖 Calças em Inventário</b>  
+<i>Até os heróis precisam vestir as pernas.</i>
+
+Item 01: <i>{calca_1}</i>  
+Item 02: <i>{calca_2}</i>  
+Item 03: <i>{calca_3}</i>  
+Item 04: <i>{calca_4}</i>  
+Item 05: <i>{calca_5}</i>  
+Item 06: <i>{calca_6}</i>  
+Item 07: <i>{calca_7}</i>  
+Item 08: <i>{calca_8}</i>  
+Item 09: <i>{calca_9}</i>  
+Item 10: <i>{calca_10}</i>

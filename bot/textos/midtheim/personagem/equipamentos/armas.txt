@@ -1,0 +1,13 @@
+<b>⚔️ Armas em Inventário</b>  
+<i>Escolhe tua lâmina com sabedoria...</i>
+
+Item 01: <i>{arma_1}</i>  
+Item 02: <i>{arma_2}</i>  
+Item 03: <i>{arma_3}</i>  
+Item 04: <i>{arma_4}</i>  
+Item 05: <i>{arma_5}</i>  
+Item 06: <i>{arma_6}</i>  
+Item 07: <i>{arma_7}</i>  
+Item 08: <i>{arma_8}</i>  
+Item 09: <i>{arma_9}</i>  
+Item 10: <i>{arma_10}</i>
