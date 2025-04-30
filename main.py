@@ -16,11 +16,11 @@ from handlers.midtheim.personagem import inventario # type: ignore
 from handlers.midtheim.personagem import status # type: ignore
 from handlers.midtheim.personagem.equipamentos import equipamentos # type: ignore
 from handlers.midtheim.personagem.equipamentos import armas
-#from handlers.midtheim.personagem.equipamentos import elmo
-#from handlers.midtheim.personagem.equipamentos import armadura
-#from handlers.midtheim.personagem.equipamentos import calça
-#from handlers.midtheim.personagem.equipamentos import bota
-#from handlers.midtheim.personagem.equipamentos import amuleto
+from handlers.midtheim.personagem.equipamentos import elmo
+from handlers.midtheim.personagem.equipamentos import armadura
+from handlers.midtheim.personagem.equipamentos import calça
+from handlers.midtheim.personagem.equipamentos import bota
+from handlers.midtheim.personagem.equipamentos import amuleto
 #from handlers.midtheim.arena import arena
 #from handlers.midtheim.arena import combate_rankeado
 #from handlers.midtheim.arena import combate_amistoso
@@ -147,16 +147,16 @@ def main():
     app.add_handler(CallbackQueryHandler(equipamentos.mostrar_equipamentos, pattern="^equipamentos$"))
     app.add_handler(CallbackQueryHandler(armas.mostrar_armas, pattern="^arma$"))
     app.add_handler(CallbackQueryHandler(armas.selecionar_arma, pattern="^(I[0-9]+|desequipar_arma)"))
-    #app.add_handler(CallbackQueryHandler(elmo.mostrar_elmos, pattern="^elmo$"))
-    #app.add_handler(CallbackQueryHandler(elmo.selecionar_elmo, pattern="^(I[0-9]+|desequipar_elmo)"))
-    #app.add_handler(CallbackQueryHandler(armadura.mostrar_armaduras, pattern="^armadura$"))
-    #app.add_handler(CallbackQueryHandler(armadura.selecionar_armadura, pattern="^(I[0-9]+|desequipar_armadura)"))
-    #app.add_handler(CallbackQueryHandler(calça.mostrar_calcas, pattern="^calca$"))
-    #app.add_handler(CallbackQueryHandler(calça.selecionar_calca, pattern="^(I[0-9]+|desequipar_calca)"))
-    #app.add_handler(CallbackQueryHandler(bota.mostrar_botas, pattern="^bota$"))
-    #app.add_handler(CallbackQueryHandler(bota.selecionar_bota, pattern="^(I[0-9]+|desequipar_bota)"))
-    #app.add_handler(CallbackQueryHandler(amuleto.mostrar_amuletos, pattern="^amuleto$"))
-    #app.add_handler(CallbackQueryHandler(amuleto.selecionar_amuleto, pattern="^(I[0-9]+|desequipar_amuleto)"))
+    app.add_handler(CallbackQueryHandler(elmo.mostrar_elmos, pattern="^elmo$"))
+    app.add_handler(CallbackQueryHandler(elmo.selecionar_elmo, pattern="^(I[0-9]+|desequipar_elmo)"))
+    app.add_handler(CallbackQueryHandler(armadura.mostrar_armaduras, pattern="^armadura$"))
+    app.add_handler(CallbackQueryHandler(armadura.selecionar_armadura, pattern="^(I[0-9]+|desequipar_armadura)"))
+    app.add_handler(CallbackQueryHandler(calça.mostrar_calcas, pattern="^calca$"))
+    app.add_handler(CallbackQueryHandler(calça.selecionar_calca, pattern="^(I[0-9]+|desequipar_calca)"))
+    app.add_handler(CallbackQueryHandler(bota.mostrar_botas, pattern="^bota$"))
+    app.add_handler(CallbackQueryHandler(bota.selecionar_bota, pattern="^(I[0-9]+|desequipar_bota)"))
+    app.add_handler(CallbackQueryHandler(amuleto.mostrar_amuletos, pattern="^amuleto$"))
+    app.add_handler(CallbackQueryHandler(amuleto.selecionar_amuleto, pattern="^(I[0-9]+|desequipar_amuleto)"))
     #app.add_handler(CallbackQueryHandler(arena.menu_arena, pattern="^arena$"))
     #app.add_handler(CallbackQueryHandler(combate_rankeado.iniciar_arena_rankeada, pattern="^arena_rankeado$"))
     #app.add_handler(ConversationHandler(
