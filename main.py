@@ -21,7 +21,7 @@ from handlers.midtheim.personagem.equipamentos import armadura
 from handlers.midtheim.personagem.equipamentos import calça
 from handlers.midtheim.personagem.equipamentos import bota
 from handlers.midtheim.personagem.equipamentos import amuleto
-#from handlers.midtheim.arena import arena
+from handlers.midtheim.arena import arena
 #from handlers.midtheim.arena import combate_rankeado
 #from handlers.midtheim.arena import combate_amistoso
 #from handlers.midtheim.arena import ranking
@@ -157,7 +157,7 @@ def main():
     app.add_handler(CallbackQueryHandler(bota.selecionar_bota, pattern="^(I[0-9]+|desequipar_bota)"))
     app.add_handler(CallbackQueryHandler(amuleto.mostrar_amuletos, pattern="^amuleto$"))
     app.add_handler(CallbackQueryHandler(amuleto.selecionar_amuleto, pattern="^(I[0-9]+|desequipar_amuleto)"))
-    #app.add_handler(CallbackQueryHandler(arena.menu_arena, pattern="^arena$"))
+    app.add_handler(CallbackQueryHandler(arena.menu_arena, pattern="^arena$"))
     #app.add_handler(CallbackQueryHandler(combate_rankeado.iniciar_arena_rankeada, pattern="^arena_rankeado$"))
     #app.add_handler(ConversationHandler(
     #entry_points=[CallbackQueryHandler(combate_amistoso.iniciar_combate_amistoso, pattern="^arena_amistoso$")],

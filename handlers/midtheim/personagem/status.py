@@ -3,7 +3,7 @@ from telegram.ext import ContextTypes
 from database.config import SessionLocal # type: ignore
 from database.models import Jogador, Equipado # type: ignore
 from utils.ler_texto import ler_texto # type: ignore
-from utils.atributos_calc import extrair_buffs # type: ignore
+from utils.extrator_buffs import extrair_buffs # type: ignore
 
 async def mostrar_status(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
