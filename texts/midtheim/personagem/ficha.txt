@@ -1,0 +1,12 @@
+<b>╔═══◆◈◆═══╗</b>  
+<b>       🧝 Meu Personagem</b>  
+<b>╚═══◆◈◆═══╝</b>
+
+<b>✦ Nome:</b> <i>{nome}</i>  
+<b>✦ Nível:</b> <i>{lvl}</i>  
+<b>✦ XP:</b> <i>{xp}</i>  
+<b>✦ Classe:</b> <i>{classe}</i>  
+<b>✦ Local:</b> <i>{local}</i>  
+
+<b>⚔️ Destino:</b> <i>Forjado em Midtheim, moldado em batalha...</i>  
+<b>🩶 Que os antigos sussurrem teu nome entre os salões de pedra.</b>

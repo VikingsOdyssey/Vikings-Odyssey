@@ -1,0 +1,13 @@
+<b>🥾 Botas em Inventário</b>  
+<i>Para trilhar os caminhos de Midtheim sem medo nem bolhas.</i>
+
+Item 01: <i>{bota_1}</i>  
+Item 02: <i>{bota_2}</i>  
+Item 03: <i>{bota_3}</i>  
+Item 04: <i>{bota_4}</i>  
+Item 05: <i>{bota_5}</i>  
+Item 06: <i>{bota_6}</i>  
+Item 07: <i>{bota_7}</i>  
+Item 08: <i>{bota_8}</i>  
+Item 09: <i>{bota_9}</i>  
+Item 10: <i>{bota_10}</i>

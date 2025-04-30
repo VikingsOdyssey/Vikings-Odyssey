@@ -1,0 +1,13 @@
+<b>📿 Amuletos em Inventário</b>  
+<i>Entre bênçãos e maldições, o poder espreita.</i>
+
+Item 01: <i>{amuleto_1}</i>  
+Item 02: <i>{amuleto_2}</i>  
+Item 03: <i>{amuleto_3}</i>  
+Item 04: <i>{amuleto_4}</i>  
+Item 05: <i>{amuleto_5}</i>  
+Item 06: <i>{amuleto_6}</i>  
+Item 07: <i>{amuleto_7}</i>  
+Item 08: <i>{amuleto_8}</i>  
+Item 09: <i>{amuleto_9}</i>  
+Item 10: <i>{amuleto_10}</i>

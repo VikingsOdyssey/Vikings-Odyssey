@@ -1,0 +1,13 @@
+<b>🥋 Armaduras em Inventário</b>  
+<i>Proteção é mais do que ferro — é fé forjada.</i>
+
+Item 01: <i>{armadura_1}</i>  
+Item 02: <i>{armadura_2}</i>  
+Item 03: <i>{armadura_3}</i>  
+Item 04: <i>{armadura_4}</i>  
+Item 05: <i>{armadura_5}</i>  
+Item 06: <i>{armadura_6}</i>  
+Item 07: <i>{armadura_7}</i>  
+Item 08: <i>{armadura_8}</i>  
+Item 09: <i>{armadura_9}</i>  
+Item 10: <i>{armadura_10}</i>

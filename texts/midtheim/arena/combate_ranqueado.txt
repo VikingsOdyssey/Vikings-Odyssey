@@ -1,0 +1,28 @@
+<b>🏆 Arena Rankeada - Confronto Finalizado!</b>  
+<b>⚖️ Resultado:</b> <i>{resultado}</i>
+
+━━━━━━━━ 𝕯𝖆𝖉𝖔𝖘 𝖉𝖔 𝕮𝖔𝖒𝖇𝖆𝖙𝖊 ━━━━━━━━  
+👤 - <b>{Nome}</b>  
+• Classe: <i>{Classe}</i>  
+• Vida Inicial: ❤️ <i>{Vida}</i>  
+• Dano Base: ⚔️ <i>{Dano}</i>  
+• Agilidade: 🏃‍♂️ <i>{Agilidade}</i>  
+• Crítico: 💥 <i>{Critico}%</i>  
+• Pontuação Antes: <i>{Pontos_Anteriores}</i>  
+• Pontuação Agora: <i>{Pontos_Atualizados}</i>
+
+⚔️ VS ⚔️
+
+👤 - <b>{Nome_Oponente}</b>  
+• Classe: <i>{Classe_Oponente}</i>  
+• Vida Inicial: ❤️ <i>{Vida_Oponente}</i>  
+• Dano Base: ⚔️ <i>{Dano_Oponente}</i>  
+• Agilidade: 🏃‍♂️ <i>{Agilidade_Oponente}</i>  
+• Crítico: 💥 <i>{Critico_Oponente}%</i>  
+• Pontuação Antes: <i>{Pontos_Oponente_Ant}</i>  
+• Pontuação Agora: <i>{Pontos_Oponente_Novo}</i>
+
+━━━━━━━━━━ ℝ𝕆𝔻𝔸𝔻𝔸𝕊 ━━━━━━━━━━  
+<code>{Log}</code>
+
+<i>⚜️ A glória aguarda apenas os mais dignos. Continue subindo na hierarquia da Arena.</i>
