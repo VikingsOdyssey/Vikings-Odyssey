@@ -23,7 +23,7 @@ from handlers.midtheim.personagem.equipamentos import bota
 from handlers.midtheim.personagem.equipamentos import amuleto
 from handlers.midtheim.arena import arena
 #from handlers.midtheim.arena import combate_rankeado
-#from handlers.midtheim.arena import combate_amistoso
+from handlers.midtheim.arena import combate_amistoso
 #from handlers.midtheim.arena import ranking
 #from handlers.midtheim.ferreiro import ferreiro
 #from handlers.midtheim.ferreiro.forja import menu_forja
@@ -159,13 +159,13 @@ def main():
     app.add_handler(CallbackQueryHandler(amuleto.selecionar_amuleto, pattern="^(I[0-9]+|desequipar_amuleto)"))
     app.add_handler(CallbackQueryHandler(arena.menu_arena, pattern="^arena$"))
     #app.add_handler(CallbackQueryHandler(combate_rankeado.iniciar_arena_rankeada, pattern="^arena_rankeado$"))
-    #app.add_handler(ConversationHandler(
-    #entry_points=[CallbackQueryHandler(combate_amistoso.iniciar_combate_amistoso, pattern="^arena_amistoso$")],
-    #states={
-    #    combate_amistoso.BUSCA_OPONENTE: [MessageHandler(filters.TEXT & ~filters.COMMAND, combate_amistoso.resolver_combate)],
-    #},
-    #fallbacks=[],
-#))
+    app.add_handler(ConversationHandler(
+    entry_points=[CallbackQueryHandler(combate_amistoso.iniciar_combate_amistoso, pattern="^arena_amistoso$")],
+    states={
+        combate_amistoso.BUSCA_OPONENTE: [MessageHandler(filters.TEXT & ~filters.COMMAND, combate_amistoso.resolver_combate)],
+    },
+    fallbacks=[],
+))
     #app.add_handler(CallbackQueryHandler(ranking.mostrar_ranking, pattern="^ranking_arena$"))
     #app.add_handler(CallbackQueryHandler(ferreiro.menu_ferreiro, pattern="^forja$"))
     #app.add_handler(CallbackQueryHandler(menu_forja.menu_forja_equipamento, pattern="^forjar_equipamento$"))
