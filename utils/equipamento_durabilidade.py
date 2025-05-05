@@ -26,10 +26,6 @@ def reduzir_durabilidade(nome_item):
     return f"[{novo_valor}/{maxima}] {item_sem_durabilidade}"
 
 def registrar_uso_equipamentos(lista_itens: list[str], quantidade: int = 1) -> list[str]:
-    """
-    Subtrai 'quantidade' da durabilidade de cada equipamento da lista.
-    Retorna a lista de equipamentos atualizados com nova durabilidade.
-    """
     atualizados = []
     for item in lista_itens:
         if not item:
@@ -52,16 +48,28 @@ def extrair_buffs_com_durabilidade(nome_item):
         return extrair_buffs(None)
     return extrair_buffs(nome_item)
 
-def extrair_equipamentos_danificados(lista_itens: list[str]) -> list[str]:
-    """
-    Retorna uma lista com os nomes dos equipamentos cuja durabilidade está zerada.
-    """
+def extrair_equipamentos_danificados(equipado):
     danificados = []
-    for item in lista_itens:
+
+    for nome, item in {
+        "arma": equipado.arma,
+        "elmo": equipado.elmo,
+        "armadura": equipado.armadura,
+        "botas": equipado.bota,
+        "calca": equipado.calca,
+        "amuleto": equipado.amuleto
+    }.items():
         atual, _ = extrair_durabilidade(item)
-        if atual == 0:
-            # Extrai o nome limpo do item (sem a parte da durabilidade)
-            partes = item.split("]", 1)
-            nome_limpo = partes[1].strip() if len(partes) > 1 else item
-            danificados.append(nome_limpo)
+        if atual == 0 and item:
+            danificados.append(f"{nome} ({item})")
+
     return danificados
+
+def registrar_uso_de_equipado(equipado):
+    for slot in ["arma", "elmo", "armadura", "bota", "calca", "amuleto"]:
+        equipamento = getattr(equipado, slot)
+        if equipamento and '/' in equipamento:
+            atual, maximo = extrair_durabilidade(equipamento)
+            if atual > 0:
+                novo_valor = f"[{max(atual - 1, 0)}/{maximo}] {equipamento.split(']', 1)[-1].strip()}"
+                setattr(equipado, slot, novo_valor)
