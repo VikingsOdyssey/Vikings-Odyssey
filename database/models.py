@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, JSON
-from database.config import Base
+from database.config import Base # type: ignore
 
 class Jogador(Base):
     __tablename__ = "jogadores"
@@ -147,7 +147,6 @@ class Equipado(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     chat_id = Column(String, unique=True, index=True, nullable=False)
-    # Equipamentos equipados (1 ou nenhum por tipo)
     arma = Column(String, default="")
     elmo = Column(String, default="")
     armadura = Column(String, default="")
