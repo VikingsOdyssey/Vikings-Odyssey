@@ -1,76 +1,67 @@
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
-from database.config import SessionLocal
-from database.models import Jogador, Elmo, Equipado
+from firebase_admin import db
 from utils.equipamento_utils import mover_equipamento_para_inventario, equipar_item, teclado_pos_equipar
 from utils.ler_texto import ler_texto
 
-#-------------------------------------------------------------------
+# -------------------------------------------------------------------
 # Mostra a lista de elmos disponíveis
 async def mostrar_elmos(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
     await query.edit_message_reply_markup(reply_markup=None)
-    chat_id = str(query.message.chat_id)
-    session = SessionLocal()
-    elmo = session.query(Elmo).filter_by(chat_id=chat_id).first()
-    texto = ler_texto("../texts/midtheim/personagem/equipamentos/elmos.txt").format(
-        elmo_1=elmo.Item1 or "Vazio",
-        elmo_2=elmo.Item2 or "Vazio",
-        elmo_3=elmo.Item3 or "Vazio",
-        elmo_4=elmo.Item4 or "Vazio",
-        elmo_5=elmo.Item5 or "Vazio",
-        elmo_6=elmo.Item6 or "Vazio",
-        elmo_7=elmo.Item7 or "Vazio",
-        elmo_8=elmo.Item8 or "Vazio",
-        elmo_9=elmo.Item9 or "Vazio",
-        elmo_10=elmo.Item10 or "Vazio"
-    )
-    teclado = InlineKeyboardMarkup([
-        [InlineKeyboardButton(f"Item {i:02}", callback_data=f"I{i}")] for i in range(1, 11)
-    ] + [[InlineKeyboardButton("Desequipar", callback_data="desequipar_elmo")]])
-    await query.message.reply_text(text=texto, reply_markup=teclado, parse_mode="HTML")
-    session.close()
 
-#-------------------------------------------------------------------
+    chat_id = str(query.message.chat_id)
+    ref_elmos = db.reference(f"{chat_id}/Equipamentos/Elmos")
+    elmos = ref_elmos.get() or {}
+
+    texto = ler_texto("../texts/midtheim/personagem/equipamentos/elmos.txt").format(
+        **{f"elmo_{i}": elmos.get(f"Item{i}", "Vazio") or "Vazio" for i in range(1, 11)}
+    )
+
+    teclado = InlineKeyboardMarkup([
+        [InlineKeyboardButton(f"Item {i:02}", callback_data=f"Elmo{i}")] for i in range(1, 11)
+    ] + [[InlineKeyboardButton("Desequipar", callback_data="desequipar_elmo")]])
+
+    await query.message.reply_text(text=texto, reply_markup=teclado, parse_mode="HTML")
+
+# -------------------------------------------------------------------
 # Trata a escolha de item OU retorno ao menu
 async def selecionar_elmo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
     escolha = query.data
-
     chat_id = str(query.message.chat_id)
-    session = SessionLocal()
 
-    jogador = session.query(Jogador).filter_by(chat_id=chat_id).first()
-    elmo = session.query(Elmo).filter_by(chat_id=chat_id).first()
-    equipado = session.query(Equipado).filter_by(chat_id=chat_id).first()
+    ref_base = db.reference(f"{chat_id}")
+    ref_jogador = ref_base.child("Perfil")
+    ref_elmos = ref_base.child("Equipamentos/Elmos")
+    ref_equipado = ref_base.child("Equipado")
 
-    # Desequipar
+    elmos = ref_elmos.get() or {}
+    equipado = ref_equipado.get() or {}
+
+   # Desequipar
     if escolha == "desequipar_elmo":
-        texto = mover_equipamento_para_inventario(jogador, elmo, equipado, "elmo")
-        session.commit()
+        texto = mover_equipamento_para_inventario(ref_elmos, ref_equipado, "Elmo")
         teclado = teclado_pos_equipar()
         await query.message.reply_text(text=texto, reply_markup=teclado, parse_mode="HTML")
-        session.close()
         return
+
 
     # Equipar novo item
     try:
-        slot_index = int(escolha[1:])
+        slot_index = int(escolha[4:])
         slot_nome = f"Item{slot_index}"
     except ValueError:
         await query.message.reply_text("❌ Seleção inválida.", parse_mode="HTML")
-        session.close()
         return
 
-    novo_item = getattr(elmo, slot_nome)
+    novo_item = elmos.get(slot_nome)
     if not novo_item or novo_item.strip() == "":
         texto = "Este slot está vazio!"
     else:
-        texto = equipar_item(jogador, elmo, equipado, "elmo", slot_nome)
+        texto = equipar_item(ref_elmos, ref_equipado, "Elmo", slot_nome)
 
-    session.commit()
     teclado = teclado_pos_equipar()
     await query.message.reply_text(text=texto, reply_markup=teclado, parse_mode="HTML")
-    session.close()

@@ -1,32 +1,39 @@
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
-from database.config import SessionLocal # type: ignore
-from database.models import Jogador, Inventario # type: ignore
-from utils.ler_texto import ler_texto # type: ignore
+from firebase_admin import db
+from utils.ler_texto import ler_texto
 
 async def mostrar_inventario(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
-    await query.edit_message_reply_markup(reply_markup = None)
+    await query.edit_message_reply_markup(reply_markup=None)
+    
     chat_id = str(query.message.chat_id)
-    session = SessionLocal()
-    jogador = session.query(Jogador).filter_by(chat_id = chat_id).first()
-    inventario = session.query(Inventario).filter_by(chat_id = chat_id).first()
-    texto = ler_texto("../texts/midtheim/personagem/inventario.txt").format(nome=
-        jogador.nome,
-        moedas = inventario.moedas,
-        diamantes = inventario.diamantes,
-        madeira = inventario.madeira,
-        aco = inventario.aco,
-        pedra = inventario.pedra,
-        linha = inventario.linha,
-        couro = inventario.couro,
-        criacao = inventario.joia_criacao,
-        aperfeicoamento = inventario.joia_aperfeicoamento
+    ref = db.reference(f"{chat_id}")
+    
+    perfil = ref.child("Perfil").get()
+    inventario = ref.child("Inventario").get()
+
+    if not perfil or not inventario:
+        await query.message.reply_text("❌ Não foi possível carregar os dados do inventário.")
+        return
+
+    texto = ler_texto("../texts/midtheim/personagem/inventario.txt").format(
+        nome=perfil.get("Nome", "Desconhecido"),
+        moedas=inventario.get("Moedas", 0),
+        diamantes=inventario.get("Diamantes", 0),
+        madeira=inventario.get("Madeira", 0),
+        aco=inventario.get("Aco", 0),
+        pedra=inventario.get("Pedra", 0),
+        linha=inventario.get("Linha", 0),
+        couro=inventario.get("Couro", 0),
+        criacao=inventario.get("Joia_Criacao", 0),
+        aperfeicoamento=inventario.get("Joia_Aperfeicoamento", 0)
     )
+
     teclado = InlineKeyboardMarkup([
-        [InlineKeyboardButton("Voltar", callback_data = "personagem")],
-        [InlineKeyboardButton("Menu de Midtheim", callback_data = "menu_midtheim")]
+        [InlineKeyboardButton("Voltar", callback_data="personagem")],
+        [InlineKeyboardButton("Menu de Midtheim", callback_data="menu_midtheim")]
     ])
-    await query.message.reply_text(text = texto, reply_markup = teclado, parse_mode = "HTML")
-    session.close()
+
+    await query.message.reply_text(text=texto, reply_markup=teclado, parse_mode="HTML")

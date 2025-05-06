@@ -1,39 +1,86 @@
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
-from database.config import SessionLocal # type: ignore
-from database.models import Jogador, Equipado # type: ignore
-from utils.ler_texto import ler_texto # type: ignore
-from utils.extrator_buffs import extrair_buffs # type: ignore
+from firebase_admin import db
+from utils.ler_texto import ler_texto
+from utils.extrator_buffs import extrair_buffs
 
 async def mostrar_status(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
     await query.edit_message_reply_markup(reply_markup=None)
-    chat_id = str(query.message.chat_id)
-    session = SessionLocal()
-    jogador = session.query(Jogador).filter_by(chat_id=chat_id).first()
-    equipado = session.query(Equipado).filter_by(chat_id=chat_id).first()
-    atributos = {"forca": jogador.forca, "magia": jogador.magia, "precisao": jogador.precisao, "resistencia": jogador.resistencia, "velocidade": jogador.velocidade, "destreza": jogador.destreza, "furia": jogador.furia, "bencao": jogador.bencao, "dominio": jogador.dominio}
-    equipamentos = [equipado.arma, equipado.elmo, equipado.armadura, equipado.calca, equipado.bota]
-    if equipado.amuleto:
-        equipamentos.append(equipado.amuleto)
+
+    chat_id = str(query.from_user.id)
+
+    perfil_ref = db.reference(f"{chat_id}/Perfil")
+    atributos_ref = db.reference(f"{chat_id}/Atributos")
+    equipado_ref = db.reference(f"{chat_id}/Equipado")
+
+    perfil = perfil_ref.get()
+    atributos_base = atributos_ref.get()
+    equipado = equipado_ref.get()
+
+    if not perfil or not atributos_base or not equipado:
+        await query.message.reply_text("❌ Não foi possível carregar seus dados.")
+        return
+
+    # Inicializa os atributos com os valores salvos no banco
+    atributos = {chave.lower(): atributos_base.get(chave, 0) for chave in atributos_base}
+
+    # Lista de itens equipados (podem ser vazios)
+    equipamentos = [
+        equipado.get("Arma", ""),
+        equipado.get("Elmo", ""),
+        equipado.get("Armadura", ""),
+        equipado.get("Calca", ""),
+        equipado.get("Bota", ""),
+        equipado.get("Amuleto", "")
+    ]
+
+    # Aplica buffs de cada item
     for item in equipamentos:
         if item:
             buffs = extrair_buffs(item)
             for chave in atributos:
-                atributos[chave] += buffs[chave]
-    atributo_ataque_por_classe = {"guardiao": "forca", "bárbaro": "furia", "lanceiro": "dominio", "caçador": "precisao", "arcano": "magia", "espadachim": "destreza"}
-    classe = jogador.classe.lower()
+                atributos[chave] += buffs.get(chave, 0)
+
+    # Define o atributo de ataque com base na classe
+    atributo_ataque_por_classe = {
+        "guardiao": "forca",
+        "bárbaro": "furia",
+        "lanceiro": "dominio",
+        "caçador": "precisao",
+        "arcano": "magia",
+        "espadachim": "destreza"
+    }
+
+    classe = perfil.get("Classe", "").lower()
     atributo_chave = atributo_ataque_por_classe.get(classe)
-    atributo_ataque = atributos[atributo_chave] if atributo_chave else 0
-    vida = atributos["resistencia"] * 3
-    agilidade = int(atributos["velocidade"] * 1.5)
-    critico = int(atributos["bencao"] * 1.5)
-    dano = atributo_ataque * 1
-    texto = ler_texto("../texts/midtheim/personagem/status.txt").format(vida=vida, agilidade=agilidade, critico=critico, dano=dano, forca=atributos["forca"], magia=atributos["magia"], precisao=atributos["precisao"], resistencia=atributos["resistencia"], velocidade=atributos["velocidade"], destreza=atributos["destreza"], furia=atributos["furia"], bencao=atributos["bencao"], dominio=atributos["dominio"])
+    atributo_ataque = atributos.get(atributo_chave, 0) if atributo_chave else 0
+
+    vida = atributos.get("resistencia", 0) * 3
+    agilidade = int(atributos.get("velocidade", 0) * 1.5)
+    critico = int(atributos.get("bencao", 0) * 1.5)
+    dano = atributo_ataque
+
+    texto = ler_texto("../texts/midtheim/personagem/status.txt").format(
+        vida=vida,
+        agilidade=agilidade,
+        critico=critico,
+        dano=dano,
+        forca=atributos.get("forca", 0),
+        magia=atributos.get("magia", 0),
+        precisao=atributos.get("precisao", 0),
+        resistencia=atributos.get("resistencia", 0),
+        velocidade=atributos.get("velocidade", 0),
+        destreza=atributos.get("destreza", 0),
+        furia=atributos.get("furia", 0),
+        bencao=atributos.get("bencao", 0),
+        dominio=atributos.get("dominio", 0)
+    )
+
     teclado = InlineKeyboardMarkup([
         [InlineKeyboardButton("↩️ Voltar", callback_data="personagem")],
         [InlineKeyboardButton("Menu de Midtheim", callback_data="menu_midtheim")]
     ])
+
     await query.message.reply_text(text=texto, reply_markup=teclado, parse_mode="HTML")
-    session.close()
