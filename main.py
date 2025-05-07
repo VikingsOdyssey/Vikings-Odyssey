@@ -6,6 +6,7 @@ from telegram.ext import Application, CommandHandler, ContextTypes, MessageHandl
 from dotenv import load_dotenv
 from firebase_admin import credentials, initialize_app, db
 from libs.classes import classes_atributos
+from handlers import coming_soon
 from handlers.midtheim.menu_midtheim import menu_midtheim
 from handlers.midtheim.personagem import personagem, inventario, status
 from handlers.midtheim.personagem.equipamentos import equipamentos, armas, elmo, armadura, calca, bota, amuleto
@@ -94,12 +95,13 @@ def main():
     app.add_handler(conv_handler)
 
     # Handlers principais
+    app.add_handler(CallbackQueryHandler(coming_soon.coming_soon, pattern="^coming_soon$"))
+    app.add_handler(CallbackQueryHandler(start, pattern="^start$"))
     app.add_handler(CallbackQueryHandler(menu_midtheim, pattern="^menu_midtheim$"))
     app.add_handler(CallbackQueryHandler(personagem.mostrar_ficha, pattern="^personagem$"))
     app.add_handler(CallbackQueryHandler(inventario.mostrar_inventario, pattern="^inventario$"))
     app.add_handler(CallbackQueryHandler(status.mostrar_status, pattern="^status$"))
     app.add_handler(CallbackQueryHandler(equipamentos.mostrar_equipamentos, pattern="^equipamentos$"))
-
     app.add_handler(CallbackQueryHandler(armas.mostrar_armas, pattern="^arma$"))
     app.add_handler(CallbackQueryHandler(armas.selecionar_arma, pattern="^(Arma[0-9]+|desequipar_arma)"))
     app.add_handler(CallbackQueryHandler(elmo.mostrar_elmos, pattern="^elmo$"))
@@ -112,7 +114,6 @@ def main():
     app.add_handler(CallbackQueryHandler(bota.selecionar_bota, pattern="^(Bota[0-9]+|desequipar_bota)"))
     app.add_handler(CallbackQueryHandler(amuleto.mostrar_amuletos, pattern="^amuleto$"))
     app.add_handler(CallbackQueryHandler(amuleto.selecionar_amuleto, pattern="^(Amuleto[0-9]+|desequipar_amuleto)"))
-
     app.add_handler(CallbackQueryHandler(arena.menu_arena, pattern="^arena$"))
     app.add_handler(CallbackQueryHandler(combate_rankeado.iniciar_arena_rankeada, pattern="^arena_rankeado$"))
     app.add_handler(ConversationHandler(

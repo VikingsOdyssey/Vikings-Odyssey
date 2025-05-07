@@ -1,4 +1,4 @@
-from telegram import Update
+from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.ext import ContextTypes
 from firebase_admin import db
 
@@ -19,12 +19,16 @@ CATEGORIAS_EMOJIS = {
 }
 
 def obter_categoria_em_emoji(rank):
+    
     for nome, (min_r, max_r) in CATEGORIAS.items():
         if min_r <= rank <= max_r:
             return CATEGORIAS_EMOJIS[nome]
     return "❓"
 
 async def mostrar_ranking(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+    await query.edit_message_reply_markup(reply_markup=None)
     ref = db.reference("/")
     todos_usuarios = ref.get()
     chat_id = str(update.effective_user.id)
@@ -57,6 +61,10 @@ async def mostrar_ranking(update: Update, context: ContextTypes.DEFAULT_TYPE):
             emoji = obter_categoria_em_emoji(jogador["rank"])
             texto += f"\n{i}° {emoji} {jogador['nome']} (você)\n"
             break
+    teclado = InlineKeyboardMarkup([
+        [InlineKeyboardButton("↩️ Voltar", callback_data="arena")],
+        [InlineKeyboardButton("Menu de Midtheim", callback_data="menu_midtheim")]
+    ])
 
-    await update.callback_query.answer()
-    await update.callback_query.edit_message_text(text=texto, parse_mode="HTML")
+    await query.message.reply_text(text=texto, reply_markup=teclado, parse_mode="HTML")
+
