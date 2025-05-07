@@ -1,44 +1,54 @@
-from utils.equipamento_durabilidade import extrair_buffs_com_durabilidade
+# utils/atributos_calc.py
 
-def calcular_atributos(jogador, equipado):
-    atributos = {
-        "forca": jogador.forca,
-        "magia": jogador.magia,
-        "precisao": jogador.precisao,
-        "resistencia": jogador.resistencia,
-        "velocidade": jogador.velocidade,
-        "destreza": jogador.destreza,
-        "furia": jogador.furia,
-        "bencao": jogador.bencao,
-        "dominio": jogador.dominio
-    }
+from utils.extrator_buffs import extrair_buffs
+from utils.equipamento_durabilidade import extrair_durabilidade, item_possui_durabilidade
 
-    equipamentos = [equipado.arma, equipado.elmo, equipado.armadura, equipado.calca, equipado.bota]
-    if equipado.amuleto:
-        equipamentos.append(equipado.amuleto)
+def seguro_int(v):
+    try:
+        return int(v)
+    except:
+        return 0
 
-    for item in equipamentos:
-        buffs = extrair_buffs_com_durabilidade(item)
-        for chave in atributos:
-            atributos[chave] += buffs[chave]
+def calcular_atributos(jogador_dict: dict, equipado_dict: dict) -> tuple[dict, int, int, int, int]:
+    atributos_base = jogador_dict.get("Atributos", {})
+    equipado = jogador_dict.get("Equipado", {}) if not equipado_dict else equipado_dict
 
-    vida = atributos["resistencia"] * 3
-    agilidade = int(atributos["velocidade"] * 1.5)
-    critico = int(atributos["bencao"] * 1.5)
-    dano = atributos.get(jogador.atributo_ataque, 0)
+    buffs = {}
+    for tipo, item in equipado.items():
+        if item and item_possui_durabilidade(item):
+            atual, _ = extrair_durabilidade(item)
+            if atual > 0:
+                buffs_item = extrair_buffs(item)
+                for atr, val in buffs_item.items():
+                    buffs[atr] = buffs.get(atr, 0) + val
 
-    return atributos, vida, agilidade, critico, dano
+    atributos_finais = {}
+    for atributo, valor in atributos_base.items():
+        if atributo.lower() == "atributo_ataque":
+            continue
+        val_final = seguro_int(valor) + seguro_int(buffs.get(atributo.lower(), 0))
+        atributos_finais[atributo.lower()] = val_final
 
-def calcular_dano_com_reducao(dano_base, critado, atributo_ataque, atributos_defensor, classe_atacante, classe_defensor):
-    """
-    Reduz o dano baseado na resistência ao atributo de ataque do atacante.
-    Se as classes forem iguais, ignora a redução para evitar anulação completa.
-    """
-    dano_final = dano_base * (2 if critado else 1)
+    vida = atributos_finais.get("resistencia") * 3
+    agilidade = int(atributos_finais.get("velocidade") * 1.5)
+    critico = atributos_finais.get("bencao") * 1.5
+    atributo_ataque = atributos_base.get("atributo_ataque", "forca").lower()
+    dano = atributos_finais.get(atributo_ataque)
 
-    # Evita anulação total quando as classes são iguais
-    if classe_atacante == classe_defensor:
-        return int(dano_final)
+    return atributos_finais, vida, agilidade, critico, dano
 
-    resistencia_ao_ataque = atributos_defensor.get(atributo_ataque, 0)
-    return int(max(0, dano_final - resistencia_ao_ataque))
+
+def calcular_dano_com_reducao(base_dano, critado, atributo_ataque, atributos_defensor, classe_atacante, classe_defensor):
+    dano = base_dano * 1.5 if critado else base_dano
+    resistencia = atributos_defensor.get("resistencia", 0)
+
+    # Exemplo de bonus de classe (ajuste conforme necessário)
+    if classe_atacante == "Mago" and classe_defensor == "Guerreiro":
+        dano *= 1.2
+    elif classe_atacante == "Guerreiro" and classe_defensor == "Arqueiro":
+        dano *= 1.2
+    elif classe_atacante == "Arqueiro" and classe_defensor == "Mago":
+        dano *= 1.2
+
+    dano_final = max(0, int(dano - (resistencia / 2)))
+    return dano_final

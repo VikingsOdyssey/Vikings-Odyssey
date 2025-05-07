@@ -3,73 +3,40 @@ from utils.extrator_buffs import extrair_buffs
 
 DURABILIDADE_REGEX = re.compile(r"\[(\d+)/(\d+)]")
 
-def item_possui_durabilidade(nome_item):
-    if not nome_item:
-        return False
-    return bool(DURABILIDADE_REGEX.match(nome_item))
+def item_possui_durabilidade(nome_item: str) -> bool:
+    return bool(nome_item and DURABILIDADE_REGEX.search(nome_item))
 
-def extrair_durabilidade(nome_item):
+def extrair_durabilidade(nome_item: str) -> tuple[int, int]:
     if not item_possui_durabilidade(nome_item):
         return 0, 0
-    match = DURABILIDADE_REGEX.match(nome_item)
-    if match:
-        return int(match.group(1)), int(match.group(2))
-    return 0, 0
+    match = DURABILIDADE_REGEX.search(nome_item)
+    return int(match.group(1)), int(match.group(2))
 
-def reduzir_durabilidade(nome_item):
+def reduzir_durabilidade(nome_item: str) -> str:
     if not item_possui_durabilidade(nome_item):
         return nome_item
-    match = DURABILIDADE_REGEX.match(nome_item)
+    match = DURABILIDADE_REGEX.search(nome_item)
     atual, maxima = int(match.group(1)), int(match.group(2))
     novo_valor = max(0, atual - 1)
-    item_sem_durabilidade = nome_item[match.end():].strip()
+    item_sem_durabilidade = DURABILIDADE_REGEX.sub("", nome_item).strip()
     return f"[{novo_valor}/{maxima}] {item_sem_durabilidade}"
 
-def registrar_uso_equipamentos(lista_itens: list[str], quantidade: int = 1) -> list[str]:
-    atualizados = []
-    for item in lista_itens:
-        if not item:
-            atualizados.append("")
-            continue
-        match = DURABILIDADE_REGEX.match(item)
-        if not match:
-            atualizados.append(item)
-            continue
-        atual, maximo = int(match.group(1)), int(match.group(2))
-        novo_atual = max(0, atual - quantidade)
-        item_sem_durabilidade = item[match.end():].strip()
-        atualizado = f"[{novo_atual}/{maximo}] {item_sem_durabilidade}"
-        atualizados.append(atualizado)
-    return atualizados
-
-def extrair_buffs_com_durabilidade(nome_item):
-    atual, _ = extrair_durabilidade(nome_item)
-    if atual == 0:
-        return extrair_buffs(None)
-    return extrair_buffs(nome_item)
-
-def extrair_equipamentos_danificados(equipado):
+def extrair_equipamentos_danificados(equipado_dict: dict) -> list[str]:
     danificados = []
-
-    for nome, item in {
-        "arma": equipado.arma,
-        "elmo": equipado.elmo,
-        "armadura": equipado.armadura,
-        "botas": equipado.bota,
-        "calca": equipado.calca,
-        "amuleto": equipado.amuleto
-    }.items():
-        atual, _ = extrair_durabilidade(item)
-        if atual == 0 and item:
-            danificados.append(f"{nome} ({item})")
-
+    for tipo, item in equipado_dict.items():
+        dur, _ = extrair_durabilidade(item)
+        if dur == 0 and item:
+            danificados.append(f"{tipo.capitalize()}: {item}")
     return danificados
 
-def registrar_uso_de_equipado(equipado):
-    for slot in ["arma", "elmo", "armadura", "bota", "calca", "amuleto"]:
-        equipamento = getattr(equipado, slot)
-        if equipamento and '/' in equipamento:
-            atual, maximo = extrair_durabilidade(equipamento)
-            if atual > 0:
-                novo_valor = f"[{max(atual - 1, 0)}/{maximo}] {equipamento.split(']', 1)[-1].strip()}"
-                setattr(equipado, slot, novo_valor)
+def registrar_uso_de_equipado(chat_id: str, db_ref):
+    equipado_ref = db_ref.child(f"{chat_id}/Equipado")
+    equipado_atual = equipado_ref.get()
+    if not equipado_atual:
+        return
+
+    atualizado = {}
+    for tipo, item in equipado_atual.items():
+        atualizado[tipo] = reduzir_durabilidade(item)
+
+    equipado_ref.update(atualizado)

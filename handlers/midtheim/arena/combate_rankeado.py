@@ -1,9 +1,8 @@
 import random
 from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.ext import ContextTypes, ConversationHandler
-from database.config import SessionLocal
-from database.models import Jogador, Inventario, Equipado
-from utils.atributos_calc import calcular_atributos
+from firebase_admin import db
+from utils.atributos_calc import calcular_atributos, calcular_dano_com_reducao
 from utils.equipamento_durabilidade import registrar_uso_de_equipado, extrair_equipamentos_danificados
 from utils.ler_texto import ler_texto
 
@@ -27,111 +26,112 @@ async def iniciar_arena_rankeada(update: Update, context: ContextTypes.DEFAULT_T
     await update.callback_query.answer()
     await update.callback_query.edit_message_reply_markup(reply_markup=None)
 
-    session = SessionLocal()
     chat_id = str(update.effective_user.id)
+    db_ref = db.reference("/")
+    jogador_data = db_ref.child(chat_id).get()
 
-    jogador = session.query(Jogador).filter_by(chat_id=chat_id).first()
-    inventario = session.query(Inventario).filter_by(chat_id=chat_id).first()
+    if not jogador_data:
+        await update.callback_query.message.reply_text("❌ Perfil não encontrado.")
+        return ConversationHandler.END
 
-    if inventario.arena <= 0:
+    entradas = jogador_data.get("Entradas", {})
+    if entradas.get("Arena") <= 0:
         await update.callback_query.message.reply_text("⚠️ Você não possui entradas de Arena disponíveis.")
-        session.close()
         return ConversationHandler.END
 
-    categoria = obter_categoria(jogador.rank)
-    oponentes = session.query(Jogador).filter(Jogador.chat_id != chat_id).all()
-    oponentes_mesma_cat = [j for j in oponentes if obter_categoria(j.rank) == categoria]
+    categoria = obter_categoria(jogador_data["Perfil"]["Rank"])
+    todos = db_ref.get()
+    oponentes = [
+        (k, v) for k, v in todos.items()
+        if k != chat_id and obter_categoria(v["Perfil"]["Rank"]) == categoria
+    ]
 
-    if not oponentes_mesma_cat:
+    if not oponentes:
         await update.callback_query.message.reply_text("Nenhum oponente disponível na sua categoria.")
-        session.close()
         return ConversationHandler.END
 
-    oponente = random.choice(oponentes_mesma_cat)
+    op_chat_id, oponente = random.choice(oponentes)
 
-    meu_eq = session.query(Equipado).filter_by(chat_id=chat_id).first()
-    op_eq = session.query(Equipado).filter_by(chat_id=oponente.chat_id).first()
-
-    meus_attr, vida1, agi1, crit1, dano1 = calcular_atributos(jogador, meu_eq)
-    op_attr, vida2, agi2, crit2, dano2 = calcular_atributos(oponente, op_eq)
+    meus_attr, vida1, agi1, crit1, dano1 = calcular_atributos(jogador_data, jogador_data.get("Equipado", {}))
+    op_attr, vida2, agi2, crit2, dano2 = calcular_atributos(oponente, oponente.get("Equipado", {}))
 
     vida1_ini, vida2_ini = vida1, vida2
-    Pontos_Anteriores, Pontos_Oponente_Ant = jogador.rank, oponente.rank
+    Pontos_Anteriores, Pontos_Oponente_Ant = jogador_data["Perfil"]["Rank"], oponente["Perfil"]["Rank"]
 
-    log, rodada = "", 1
-    ordem = [(jogador, dano1, crit1, op_attr, "vida2"), (oponente, dano2, crit2, meus_attr, "vida1")]
+    ordem = [(jogador_data, dano1, crit1, op_attr, "vida2"), (oponente, dano2, crit2, meus_attr, "vida1")]
     if agi2 > agi1:
         ordem.reverse()
 
+    log, rodada = "", 1
     while vida1 > 0 and vida2 > 0 and rodada <= 10:
         log += f"<b>Rodada {rodada}</b>\n"
         for atacante, dano_base, crit, defesa_attr, alvo in ordem:
             critado = random.randint(1, 100) <= crit
-            dano = dano_base * (2 if critado else 1)
-
-            defesa = defesa_attr.get(atacante.atributo_ataque, 0)
-            dano -= min(dano * 0, defesa)  # no máximo 80% de redução
-            dano = max(1, int(dano))  # dano mínimo garantido
-
+            dano = calcular_dano_com_reducao(
+                dano_base, critado,
+                atacante["Atributos"]["atributo_ataque"].lower(),
+                defesa_attr,
+                atacante["Perfil"]["Classe"],
+                ordem[1][0]["Perfil"]["Classe"]
+            )
             if alvo == "vida1":
                 vida1 = max(0, vida1 - dano)
-                log += f"{atacante.nome} causou {dano} em {jogador.nome} | Vida: ♥️{vida1}\n"
+                log += f"{atacante['Perfil']['Nome']} causou {dano} em {jogador_data['Perfil']['Nome']} | Vida: ♥️{vida1}\n"
             else:
                 vida2 = max(0, vida2 - dano)
-                log += f"{atacante.nome} causou {dano} em {oponente.nome} | Vida: ♥️{vida2}\n"
-
+                log += f"{atacante['Perfil']['Nome']} causou {dano} em {oponente['Perfil']['Nome']} | Vida: ♥️{vida2}\n"
             if vida1 == 0 or vida2 == 0:
                 break
         rodada += 1
         log += "\n"
 
     if vida1 > vida2:
-        resultado = f"{jogador.nome} venceu"
-        jogador.rank += 3
-        oponente.rank = max(0, oponente.rank - 1)
+        resultado = f"{jogador_data['Perfil']['Nome']} venceu"
+        jogador_data["Perfil"]["Rank"] += 3
+        oponente["Perfil"]["Rank"] = max(0, oponente["Perfil"]["Rank"] - 1)
     elif vida2 > vida1:
-        resultado = f"{oponente.nome} venceu"
-        jogador.rank = max(0, jogador.rank - 1)
-        oponente.rank += 3
+        resultado = f"{oponente['Perfil']['Nome']} venceu"
+        jogador_data["Perfil"]["Rank"] = max(0, jogador_data["Perfil"]["Rank"] - 1)
+        oponente["Perfil"]["Rank"] += 3
     else:
         resultado = "Empate"
 
-    registrar_uso_de_equipado(meu_eq)
-    danificados = extrair_equipamentos_danificados(meu_eq)
-
+    registrar_uso_de_equipado(chat_id, db_ref)
+    danificados = extrair_equipamentos_danificados(jogador_data["Equipado"])
     texto_danificados = ""
     if danificados:
         texto_danificados = "\n⚠️ Os seguintes equipamentos estavam danificados e foram ignorados:\n"
         texto_danificados += "\n".join(f"• {d}" for d in danificados)
 
-    inventario.arena -= 1
-    session.commit()
+    jogador_data["Entradas"]["Arena"] -= 1
+    db_ref.child(chat_id).update(jogador_data)
+    db_ref.child(op_chat_id).child("Perfil").child("Rank").set(oponente["Perfil"]["Rank"])
 
     texto = ler_texto("../texts/midtheim/arena/combate_ranqueado.txt").format(
         resultado=resultado,
-        Nome=jogador.nome,
-        Classe=jogador.classe,
+        Nome=jogador_data["Perfil"]["Nome"],
+        Classe=jogador_data["Perfil"]["Classe"],
         Vida=vida1_ini,
         Dano=dano1,
         Agilidade=agi1,
         Critico=crit1,
-        Nome_Oponente=oponente.nome,
-        Classe_Oponente=oponente.classe,
+        Nome_Oponente=oponente["Perfil"]["Nome"],
+        Classe_Oponente=oponente["Perfil"]["Classe"],
         Vida_Oponente=vida2_ini,
         Dano_Oponente=dano2,
         Agilidade_Oponente=agi2,
         Critico_Oponente=crit2,
         Log=log,
         Pontos_Anteriores=Pontos_Anteriores,
-        Pontos_Atualizados=jogador.rank,
+        Pontos_Atualizados=jogador_data["Perfil"]["Rank"],
         Pontos_Oponente_Ant=Pontos_Oponente_Ant,
-        Pontos_Oponente_Novo=oponente.rank
+        Pontos_Oponente_Novo=oponente["Perfil"]["Rank"]
     ) + texto_danificados
+
     teclado = InlineKeyboardMarkup([
         [InlineKeyboardButton("Voltar", callback_data="arena_rankeado")],
         [InlineKeyboardButton("Menu de Midtheim", callback_data="menu_midtheim")]
     ])
 
     await update.callback_query.message.reply_text(texto, reply_markup=teclado, parse_mode="HTML")
-    session.close()
     return ConversationHandler.END
