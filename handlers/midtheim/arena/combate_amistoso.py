@@ -44,7 +44,12 @@ async def resolver_combate(update: Update, context: ContextTypes.DEFAULT_TYPE):
     ultimo = duelo_cooldowns.get(chat_id, 0)
     if agora - ultimo < TEMPO_COOLDOWN:
         restante = int(TEMPO_COOLDOWN - (agora - ultimo))
-        await update.message.reply_text(f"Você deve esperar {restante} segundos antes de iniciar outro duelo.")
+        texto = f"Você deve esperar {restante} segundos antes de iniciar outro duelo."
+        teclado = InlineKeyboardMarkup([
+        [InlineKeyboardButton("↩️ Voltar", callback_data="arena_amistoso")],
+        [InlineKeyboardButton("Menu de Midtheim", callback_data="menu_midtheim")]
+    ])
+        await update.message.reply_text(text=texto, reply_markup=teclado, parse_mode="HTML")
         return ConversationHandler.END
 
     todos = db.reference("/").get()
@@ -52,7 +57,12 @@ async def resolver_combate(update: Update, context: ContextTypes.DEFAULT_TYPE):
     oponente_data = next((v for v in todos.values() if v["Perfil"]["Nome"] == nome_oponente), None)
 
     if not oponente_data or oponente_data == jogador_data:
-        await update.message.reply_text("Oponente inválido. Verifique o nome digitado.")
+        texto = "Oponente inválido. Verifique o nome digitado."
+        teclado = InlineKeyboardMarkup([
+        [InlineKeyboardButton("↩️ Voltar", callback_data="arena_amistoso")],
+        [InlineKeyboardButton("Menu de Midtheim", callback_data="menu_midtheim")]
+    ])
+        await update.message.reply_text(text=texto, reply_markup=teclado, parse_mode="HTML")
         return ConversationHandler.END
 
     meus_attr, vida1, agi1, crit1, dano1 = calcular_atributos(jogador_data, jogador_data.get("Equipado", {}))

@@ -36,7 +36,12 @@ async def iniciar_arena_rankeada(update: Update, context: ContextTypes.DEFAULT_T
 
     entradas = jogador_data.get("Entradas", {})
     if entradas.get("Arena") <= 0:
-        await update.callback_query.message.reply_text("⚠️ Você não possui entradas de Arena disponíveis.")
+        texto = "⚠️ Você não possui entradas de Arena disponíveis."
+        teclado = InlineKeyboardMarkup([
+        [InlineKeyboardButton("↩️ Voltar", callback_data="arena")],
+        [InlineKeyboardButton("Menu de Midtheim", callback_data="menu_midtheim")]
+    ])
+        await update.callback_query.message.reply_text(text=texto, reply_markup=teclado, parse_mode="HTML")
         return ConversationHandler.END
 
     categoria = obter_categoria(jogador_data["Perfil"]["Rank"])
@@ -47,7 +52,12 @@ async def iniciar_arena_rankeada(update: Update, context: ContextTypes.DEFAULT_T
     ]
 
     if not oponentes:
-        await update.callback_query.message.reply_text("Nenhum oponente disponível na sua categoria.")
+        texto = "Nenhum oponente disponível na sua categoria."
+        teclado = InlineKeyboardMarkup([
+        [InlineKeyboardButton("↩️ Voltar", callback_data="arena")],
+        [InlineKeyboardButton("Menu de Midtheim", callback_data="menu_midtheim")]
+    ])
+        await update.callback_query.message.reply_text(text=texto, reply_markup=teclado, parse_mode="HTML")
         return ConversationHandler.END
 
     op_chat_id, oponente = random.choice(oponentes)
@@ -129,7 +139,8 @@ async def iniciar_arena_rankeada(update: Update, context: ContextTypes.DEFAULT_T
     ) + texto_danificados
 
     teclado = InlineKeyboardMarkup([
-        [InlineKeyboardButton("Voltar", callback_data="arena_rankeado")],
+        [InlineKeyboardButton("Proxímo", callback_data="arena_rankeado")],
+        [InlineKeyboardButton("Voltar", callback_data="arena")],
         [InlineKeyboardButton("Menu de Midtheim", callback_data="menu_midtheim")]
     ])
 
