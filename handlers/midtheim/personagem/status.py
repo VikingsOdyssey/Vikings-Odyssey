@@ -5,6 +5,12 @@ from utils.ler_texto import ler_texto
 from utils.extrator_buffs import extrair_buffs
 
 async def mostrar_status(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    def seguro_int(v):
+        try:
+            return int(v)
+        except:
+            return 0
+
     query = update.callback_query
     await query.answer()
     await query.edit_message_reply_markup(reply_markup=None)
@@ -24,7 +30,8 @@ async def mostrar_status(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     # Inicializa os atributos com os valores salvos no banco
-    atributos = {chave.lower(): atributos_base.get(chave, 0) for chave in atributos_base}
+    atributos = {chave.lower(): seguro_int(atributos_base.get(chave, 0)) for chave in atributos_base}
+
 
     # Lista de itens equipados (podem ser vazios)
     equipamentos = [
@@ -42,6 +49,7 @@ async def mostrar_status(update: Update, context: ContextTypes.DEFAULT_TYPE):
             buffs = extrair_buffs(item)
             for chave in atributos:
                 atributos[chave] += buffs.get(chave, 0)
+
 
     # Define o atributo de ataque com base na classe
     atributo_ataque_por_classe = {

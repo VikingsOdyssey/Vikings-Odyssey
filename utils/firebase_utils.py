@@ -14,16 +14,16 @@ def criar_dados_iniciais(chat_id):
             "Rank": 0
         },
         "Atributos": {
-            "Destreza": 0,
-            "Dominio": 0,
-            "Precisao": 0,
-            "Magia": 0,
-            "Furia": 0,
-            "Forca": 0,
-            "Resistencia": 0,
-            "Bencao": 0,
-            "Velocidade": 0,
-            "Atributo_ataque": ""
+            "destreza": 0,
+            "dominio": 0,
+            "precisao": 0,
+            "magia": 0,
+            "furia": 0,
+            "forca": 0,
+            "resistencia": 0,
+            "bencao": 0,
+            "velocidade": 0,
+            "atributo_ataque": ""
         },
         "Inventario": {
             "Moedas": 0,

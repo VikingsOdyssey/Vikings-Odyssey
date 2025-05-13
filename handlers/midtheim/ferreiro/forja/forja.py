@@ -8,7 +8,7 @@ async def forja(update: Update, context: ContextTypes.DEFAULT_TYPE):
     texto = ler_texto('../texts/midtheim/ferreiro/forja/forja.txt')
     message = update.message or update.callback_query.message
     teclado = InlineKeyboardMarkup([
-        [InlineKeyboardButton("Forjar Arma", callback_data="coming_soon")],
+        [InlineKeyboardButton("Forjar Arma", callback_data="forja_arma")],
         [InlineKeyboardButton("Forjar Elmo", callback_data="coming_soon")],
         [InlineKeyboardButton("Forjar Armadura", callback_data="coming_soon")],
         [InlineKeyboardButton("Forjar Calça", callback_data="coming_soon")],

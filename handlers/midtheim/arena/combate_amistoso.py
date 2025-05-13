@@ -22,13 +22,13 @@ async def iniciar_combate_amistoso(update: Update, context: ContextTypes.DEFAULT
         if data.get("Perfil", {}).get("Nome") != "A definir" and cid != chat_id
     }
 
-    lista = "<b>Lista de Oponentes:</b>\n<code>Escolha com sabedoria...</code>\n"
+    lista = "<b>Lista de Oponentes:</b>\nEscolha com sabedoria...\n"
     for cid, data in jogadores.items():
         atributos, *_ = calcular_atributos(data, data.get("Equipado", {}))
         atributo = data["Atributos"].get("atributo_ataque").lower()
         pc = atributos.get("resistencia") + atributos.get(atributo)
         nome_curto = data["Perfil"]["Nome"][:25].ljust(25)
-        lista += f"<code>Nome: {nome_curto}\nPC: {str(pc).rjust(5)}</code>\n\n"
+        lista += f"<b>Nome:</b> <code>{nome_curto}</code>\n<b>PC:</b> {str(pc).rjust(5)}\n\n"
 
     await update.callback_query.message.reply_text(
         lista + "\n\n<b>Digite o nome do jogador que deseja desafiar:</b>",
@@ -107,7 +107,7 @@ async def resolver_combate(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
     danificados = extrair_equipamentos_danificados(jogador_data["Equipado"])
-    db_ref = db.reference(f"{chat_id}/Equipado")
+    db_ref = db.reference("/")
     registrar_uso_de_equipado(chat_id, db_ref)
 
     texto = ler_texto("../texts/midtheim/arena/combate_amistoso.txt").format(

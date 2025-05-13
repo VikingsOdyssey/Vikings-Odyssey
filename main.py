@@ -12,7 +12,7 @@ from handlers.midtheim.personagem import personagem, inventario, status
 from handlers.midtheim.personagem.equipamentos import equipamentos, armas, elmo, armadura, calca, bota, amuleto
 from handlers.midtheim.arena import arena, combate_amistoso, combate_rankeado, ranking
 from handlers.midtheim.ferreiro import ferreiro
-from handlers.midtheim.ferreiro.forja import forja
+from handlers.midtheim.ferreiro.forja import forja, forja_arma
 from utils.firebase_utils import criar_dados_iniciais
 
 load_dotenv()
@@ -25,7 +25,7 @@ initialize_app(firebase_cred, {'databaseURL': os.getenv("FIREBASE_DB_URL")})
 NOME, CLASSE = range(2)
 
 CLASSES_DISPONIVEIS = [
-    "Espadachim", "Lancero",
+    "Espadachim", "Lanceiro",
     "Caçador", "Arcano",
     "Bárbaro", "Guardião"
 ]
@@ -128,6 +128,8 @@ def main():
     app.add_handler(CallbackQueryHandler(ranking.mostrar_ranking, pattern="^ranking_arena$"))
     app.add_handler(CallbackQueryHandler(ferreiro.ferreiro, pattern="^ferreiro$"))
     app.add_handler(CallbackQueryHandler(forja.forja, pattern="^forja$"))
+    app.add_handler(CallbackQueryHandler(forja_arma.forja_armas_menu, pattern="^forja_arma$"))
+    app.add_handler(CallbackQueryHandler(forja_arma.criar_arma, pattern="^criar_arma$"))
 
     app.run_polling()
 
