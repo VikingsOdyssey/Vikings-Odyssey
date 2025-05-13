@@ -11,6 +11,8 @@ from handlers.midtheim.menu_midtheim import menu_midtheim
 from handlers.midtheim.personagem import personagem, inventario, status
 from handlers.midtheim.personagem.equipamentos import equipamentos, armas, elmo, armadura, calca, bota, amuleto
 from handlers.midtheim.arena import arena, combate_amistoso, combate_rankeado, ranking
+from handlers.midtheim.ferreiro import ferreiro
+from handlers.midtheim.ferreiro.forja import forja
 from utils.firebase_utils import criar_dados_iniciais
 
 load_dotenv()
@@ -124,6 +126,8 @@ def main():
         fallbacks=[],
     ))
     app.add_handler(CallbackQueryHandler(ranking.mostrar_ranking, pattern="^ranking_arena$"))
+    app.add_handler(CallbackQueryHandler(ferreiro.ferreiro, pattern="^ferreiro$"))
+    app.add_handler(CallbackQueryHandler(forja.forja, pattern="^forja$"))
 
     app.run_polling()
 
