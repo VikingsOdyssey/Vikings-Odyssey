@@ -2,10 +2,10 @@ EMOJIS_ATRIBUTOS = {
     "forca": "💪",
     "magia": "🔮",
     "precisao": "🎯",
-    "resistencia": "❤️‍🩹",
-    "velocidade": "⚡",
-    "destreza": "🌀",
+    "destreza": "⚔️",
     "furia": "🔥",
-    "bencao": "✨",
-    "dominio": "🏹"
+    "dominio": "🏹",
+    "resistencia": "❤️‍🩹",
+    "velocidade": "🌀",
+    "bencao": "🌟"
 }

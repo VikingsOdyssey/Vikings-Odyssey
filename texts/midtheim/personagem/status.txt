@@ -8,11 +8,11 @@
 
 ───────────────  
 <b>💪 Força:</b> {forca}  
-<b>🧠 Magia:</b> {magia}  
-<b>🎯 Precisão:</b> {precisao}  
-<b>❤️‍🩹 Resistência:</b> {resistencia}  
-<b>⚡ Velocidade:</b> {velocidade}  
-<b>🌀 Destreza:</b> {destreza}  
-<b>🔥 Fúria:</b> {furia}  
-<b>✨ Benção:</b> {bencao}  
+<b>🔮 Magia:</b> {magia}  
+<b>🎯 Precisão:</b> {precisao}   
+<b>⚔️ Destreza:</b> {destreza}  
+<b>🔥 Fúria:</b> {furia}   
 <b>🏹 Domínio:</b> {dominio}
+<b>❤️‍🩹 Resistência:</b> {resistencia} 
+<b>🌀 Velocidade:</b> {velocidade}  
+<b>🌟 Benção:</b> {bencao} 
