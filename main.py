@@ -12,7 +12,7 @@ from handlers.midtheim.personagem import personagem, inventario, status
 from handlers.midtheim.personagem.equipamentos import equipamentos, armas, elmo, armadura, calca, bota, amuleto
 from handlers.midtheim.arena import arena, combate_amistoso, combate_rankeado, ranking
 from handlers.midtheim.ferreiro import ferreiro
-from handlers.midtheim.ferreiro.forja import forja, forja_arma
+from handlers.midtheim.ferreiro.forja import forja, forja_arma, forja_elmo, forja_armadura, forja_calca, forja_bota
 from utils.firebase_utils import criar_dados_iniciais
 
 load_dotenv()
@@ -130,6 +130,15 @@ def main():
     app.add_handler(CallbackQueryHandler(forja.forja, pattern="^forja$"))
     app.add_handler(CallbackQueryHandler(forja_arma.forja_armas_menu, pattern="^forja_arma$"))
     app.add_handler(CallbackQueryHandler(forja_arma.criar_arma, pattern="^criar_arma$"))
+    app.add_handler(CallbackQueryHandler(forja_elmo.forja_elmo_menu, pattern="^forja_elmo$"))
+    app.add_handler(CallbackQueryHandler(forja_elmo.criar_elmo, pattern="^criar_elmo$"))
+    app.add_handler(CallbackQueryHandler(forja_armadura.forja_armadura_menu, pattern="^forja_armadura$"))
+    app.add_handler(CallbackQueryHandler(forja_armadura.criar_armadura, pattern="^criar_armadura$"))
+    app.add_handler(CallbackQueryHandler(forja_calca.forja_calca_menu, pattern="^forja_calca$"))
+    app.add_handler(CallbackQueryHandler(forja_calca.criar_calca, pattern="^criar_calca$"))
+    app.add_handler(CallbackQueryHandler(forja_bota.forja_bota_menu, pattern="^forja_bota$"))
+    app.add_handler(CallbackQueryHandler(forja_bota.criar_bota, pattern="^criar_bota$"))
+    
 
     app.run_polling()
 

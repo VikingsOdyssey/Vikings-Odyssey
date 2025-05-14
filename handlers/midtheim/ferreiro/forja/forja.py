@@ -9,11 +9,10 @@ async def forja(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message = update.message or update.callback_query.message
     teclado = InlineKeyboardMarkup([
         [InlineKeyboardButton("Forjar Arma", callback_data="forja_arma")],
-        [InlineKeyboardButton("Forjar Elmo", callback_data="coming_soon")],
-        [InlineKeyboardButton("Forjar Armadura", callback_data="coming_soon")],
-        [InlineKeyboardButton("Forjar Calça", callback_data="coming_soon")],
-        [InlineKeyboardButton("Forjar Botas", callback_data="coming_soon")],
-        [InlineKeyboardButton("Forjar Amuleto", callback_data="coming_soon")],
+        [InlineKeyboardButton("Forjar Elmo", callback_data="forja_elmo")],
+        [InlineKeyboardButton("Forjar Armadura", callback_data="forja_armadura")],
+        [InlineKeyboardButton("Forjar Calça", callback_data="forja_calca")],
+        [InlineKeyboardButton("Forjar Botas", callback_data="forja_bota")],
     ])
     
     await message.reply_text(text=texto, reply_markup=teclado, parse_mode="HTML")

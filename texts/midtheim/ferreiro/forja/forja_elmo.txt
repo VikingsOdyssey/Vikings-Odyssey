@@ -1,19 +1,20 @@
-🛡 <b>ᚠᛟᚱᛃᚨ ᛞᛖ ᚨᚱᛗᚨᛋ – A FORJA DAS ARMAS</b> 🛡
+🛡 <b>ᚠᛟᚱᛃᚨ ᛞᛖ ᚨᚱᛗᚨᛋ – A FORJA DOS ELMOS</b> 🛡
 <i>No coração flamejante da fornalha de Midtheim, guerreiros moldam não só metal… mas o próprio destino.</i>
 
 🔨 <b>Custo da Forja</b>
-Para criar uma arma digna dos deuses, será necessário sacrificar:
-• <b>3x</b> Madeira
-• <b>6x</b> Aço
+Para criar uma elmo digno dos deuses, será necessário sacrificar:
+• <b>5x</b> Aço
+• <b>3x</b> Couro
+• <b>2x</b> Linha
 • <b>1x</b> Joia da Criação – <i>Essência dos ancestrais, capaz de dar forma à fúria e à glória.</i>
 
-🎖 <b>Qualidade da Arma</b>
+🎖 <b>Qualidade do Elmo</b>
 O resultado da forja é determinado pelas bênçãos das Valquírias… ou o humor dos anões. Eis as probabilidades:
 🔵 <b>Comum</b> – 70.00%
 🟠 <b>Bom</b> – 20.00%
 🔴 <b>Perfeito</b> – 7.00%
 🟢 <b>Divino</b> – 3.00%
-<i>Quanto maior a qualidade, mais atributos rúnicos sua arma carregará.</i>
+<i>Quanto maior a qualidade, mais atributos rúnicos seu elmo carregará.</i>
 Comum (1 buff) • Bom (2 buffs) • Perfeito (3 buffs) • Divino (4 buffs)
 
 🔥 <b>Sucesso da Criação</b>
