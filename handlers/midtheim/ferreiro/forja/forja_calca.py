@@ -11,7 +11,7 @@ QUALIDADES = [
     ("🔴", "Perfeito", 20),
     ("🟢", "Divino", 70),
 ]
-RECEITA = {"Joia_Criacao": 1, "Couro": 4, "Aco": 3, "Linha": 3}
+RECEITA = {"Joia_Criacao": 1, "Couro": 4, "Aco": 3, "La": 3}
 
 async def forja_calca_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query

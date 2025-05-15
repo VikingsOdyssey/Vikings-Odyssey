@@ -31,8 +31,8 @@ async def mostrar_equipamentos(update: Update, context: ContextTypes.DEFAULT_TYP
         [InlineKeyboardButton("👖 Alterar Calça", callback_data="calca")],
         [InlineKeyboardButton("🥾 Alterar Bota", callback_data="bota")],
         [InlineKeyboardButton("📿 Alterar Amuleto", callback_data="amuleto")],
-        [InlineKeyboardButton("Voltar", callback_data="personagem")],
-        [InlineKeyboardButton("Menu de Midtheim", callback_data="menu_midtheim")]
+        [InlineKeyboardButton("↩️ Voltar", callback_data="personagem")],
+        [InlineKeyboardButton("Menu", callback_data=f"menu_{perfil.get("Local_Atual").lower()}")]
     ])
 
     await query.message.reply_text(text=texto, reply_markup=teclado, parse_mode="HTML")

@@ -25,15 +25,15 @@ async def mostrar_inventario(update: Update, context: ContextTypes.DEFAULT_TYPE)
         madeira=inventario.get("Madeira", 0),
         aco=inventario.get("Aco", 0),
         pedra=inventario.get("Pedra", 0),
-        linha=inventario.get("Linha", 0),
+        la=inventario.get("La", 0),
         couro=inventario.get("Couro", 0),
         criacao=inventario.get("Joia_Criacao", 0),
         aperfeicoamento=inventario.get("Joia_Aperfeicoamento", 0)
     )
 
     teclado = InlineKeyboardMarkup([
-        [InlineKeyboardButton("Voltar", callback_data="personagem")],
-        [InlineKeyboardButton("Menu de Midtheim", callback_data="menu_midtheim")]
+        [InlineKeyboardButton("↩️ Voltar", callback_data="personagem")],
+        [InlineKeyboardButton("Menu", callback_data=f"menu_{perfil.get("Local_Atual").lower()}")]
     ])
 
     await query.message.reply_text(text=texto, reply_markup=teclado, parse_mode="HTML")

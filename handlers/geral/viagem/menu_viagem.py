@@ -11,7 +11,7 @@ async def menu_viagem(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message = update.message or update.callback_query.message
     teclado = InlineKeyboardMarkup([
         [InlineKeyboardButton("🌾 Cidade de Midthem", callback_data="viajar_Midtheim")],
-        [InlineKeyboardButton("🌾 Campos de Solvindr", callback_data="coming_soon")],
+        [InlineKeyboardButton("🌾 Campos de Solvindr", callback_data="viajar_Solvindr")],
         [InlineKeyboardButton("🏞 Planícies de Modrheim", callback_data="coming_soon")],
         [InlineKeyboardButton("🌲 Floresta de Yggdreth", callback_data="coming_soon")],
         [InlineKeyboardButton("🔥 Deserto de Aska", callback_data="coming_soon")],

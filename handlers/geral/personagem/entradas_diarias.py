@@ -9,9 +9,10 @@ async def receber_itens_diarios(update: Update, context: ContextTypes.DEFAULT_TY
 
     diario_ref = db.reference(f"{chat_id}/Recebimentos/Entradas")
     ultima_data = diario_ref.get()
+    jogador = db.reference(f"{chat_id}/Perfil").get()
     teclado = InlineKeyboardMarkup([
-        [InlineKeyboardButton("Voltar", callback_data="personagem")],
-        [InlineKeyboardButton("Menu de Midtheim", callback_data="menu_midtheim")]
+        [InlineKeyboardButton("↩️ Voltar", callback_data="personagem")],
+        [InlineKeyboardButton("Menu", callback_data=f"menu_{jogador.get("Local_Atual").lower()}")]
     ])
 
     if ultima_data == data_hoje:

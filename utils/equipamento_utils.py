@@ -1,4 +1,5 @@
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import ContextTypes
 from firebase_admin import db
 
 def encontrar_primeiro_slot_vazio(container_dict):
@@ -52,5 +53,5 @@ def equipar_item(inventario_ref, equipado_ref, tipo_equipamento, slot_nome):
 def teclado_pos_equipar():
     return InlineKeyboardMarkup([
         [InlineKeyboardButton("Equipamentos", callback_data="equipamentos")],
-        [InlineKeyboardButton("Menu de Midtheim", callback_data="menu_midtheim")]
+        [InlineKeyboardButton("Menu", callback_data=f"start")]
     ])

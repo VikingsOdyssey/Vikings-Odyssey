@@ -1,1 +1,6 @@
-teste
+<b>Hora de Partir</b>
+<i>escolha seu destino com sabedoria</i>
+
+<b>Custo de Viajem</b>:
+50 Moedas
+

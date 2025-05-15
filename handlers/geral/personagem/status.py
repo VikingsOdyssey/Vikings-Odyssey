@@ -69,6 +69,7 @@ async def mostrar_status(update: Update, context: ContextTypes.DEFAULT_TYPE):
     agilidade = int(atributos.get("velocidade") * 1.5)
     critico = int(atributos.get("bencao") * 1.5)
     dano = atributo_ataque
+    jogador = db.reference(f"{chat_id}/Perfil").get()
 
     texto = ler_texto("../texts/midtheim/personagem/status.txt").format(
         vida=vida,
@@ -88,7 +89,7 @@ async def mostrar_status(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     teclado = InlineKeyboardMarkup([
         [InlineKeyboardButton("↩️ Voltar", callback_data="personagem")],
-        [InlineKeyboardButton("Menu de Midtheim", callback_data="menu_midtheim")]
+        [InlineKeyboardButton("Menu", callback_data=f"menu_{jogador.get("Local_Atual").lower()}")]
     ])
 
     await query.message.reply_text(text=texto, reply_markup=teclado, parse_mode="HTML")

@@ -1,0 +1,17 @@
+<b>🌾 Campos de Solvindr</b> – A Terra dos Ventos Livres 🍃  
+
+Os vastos campos de Solvindr se estendem até onde os olhos alcançam, banhados pelo sol e pelos ventos eternos. Caçadores, fazendeiros e nômades percorrem essas terras férteis, onde a natureza esconde desafios e recompensas.  
+
+🎯 Caçar – Persiga criaturas selvagens que rondam as pradarias.  
+⛰ Cavernas – Descubra passagens ocultas entre colinas e vales.  
+🏰 Dungeons – Enfrente perigos em ruínas ancestrais e templos esquecidos.  
+
+🚀 <i>Que os ventos guiem sua jornada!</i> 
+
+Seus dados  
+🆙 - Level: {level}
+ᚠ  - Moedas: {moedas}ᚠ
+🧶 - Lã: {la}
+⚡ - Energia: {cacada}
+⛰ - Cavernas: {cavernas}
+🏰 - Dungeons: {dungeons}

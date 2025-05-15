@@ -11,7 +11,7 @@ QUALIDADES = [
     ("🔴", "Perfeito", 20),
     ("🟢", "Divino", 70),
 ]
-RECEITA = {"Joia_Criacao": 1, "Couro": 3, "Pedra": 3, "Linha": 4}
+RECEITA = {"Joia_Criacao": 1, "Couro": 3, "Pedra": 3, "La": 4}
 
 async def forja_bota_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query

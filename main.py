@@ -1,3 +1,4 @@
+# import de sistema
 import os
 import sys
 import json
@@ -6,7 +7,11 @@ from telegram.ext import Application, CommandHandler, ContextTypes, MessageHandl
 from dotenv import load_dotenv
 from firebase_admin import credentials, initialize_app, db
 from libs.classes import classes_atributos
+from utils.firebase_utils import criar_dados_iniciais
+# imports gerais
 from handlers import coming_soon
+from handlers.geral.viagem import menu_viagem
+# imports Midtheim
 from handlers.midtheim.menu_midtheim import menu_midtheim
 from handlers.geral.personagem import entradas_diarias
 from handlers.geral.personagem import personagem, inventario, status
@@ -14,8 +19,8 @@ from handlers.geral.personagem.equipamentos import equipamentos, armas, elmo, ar
 from handlers.midtheim.arena import arena, combate_amistoso, combate_rankeado, ranking
 from handlers.midtheim.ferreiro import ferreiro
 from handlers.midtheim.ferreiro.forja import forja, forja_arma, forja_elmo, forja_armadura, forja_calca, forja_bota
-from handlers.geral.viagem import menu_viagem
-from utils.firebase_utils import criar_dados_iniciais
+# imports Solvindr
+from handlers.solvindr.menu_solvindr import menu_solvindr
 
 load_dotenv()
 
@@ -104,7 +109,6 @@ def main():
         fallbacks=[],
     )
     app.add_handler(conv_handler)
-
     # Handlers principais
     app.add_handler(CallbackQueryHandler(coming_soon.coming_soon, pattern="^coming_soon$"))
     app.add_handler(CallbackQueryHandler(start, pattern="^start$"))
@@ -127,13 +131,7 @@ def main():
     app.add_handler(CallbackQueryHandler(amuleto.selecionar_amuleto, pattern="^(Amuleto[0-9]+|desequipar_amuleto)"))
     app.add_handler(CallbackQueryHandler(arena.menu_arena, pattern="^arena$"))
     app.add_handler(CallbackQueryHandler(combate_rankeado.iniciar_arena_rankeada, pattern="^arena_rankeado$"))
-    app.add_handler(ConversationHandler(
-        entry_points=[CallbackQueryHandler(combate_amistoso.iniciar_combate_amistoso, pattern="^arena_amistoso$")],
-        states={
-            combate_amistoso.BUSCA_OPONENTE: [MessageHandler(filters.TEXT & ~filters.COMMAND, combate_amistoso.resolver_combate)],
-        },
-        fallbacks=[],
-    ))
+    app.add_handler(ConversationHandler(entry_points=[CallbackQueryHandler(combate_amistoso.iniciar_combate_amistoso, pattern="^arena_amistoso$")], states={combate_amistoso.BUSCA_OPONENTE: [MessageHandler(filters.TEXT & ~filters.COMMAND, combate_amistoso.resolver_combate)]}, fallbacks=[]))
     app.add_handler(CallbackQueryHandler(ranking.mostrar_ranking, pattern="^ranking_arena$"))
     app.add_handler(CallbackQueryHandler(ferreiro.ferreiro, pattern="^ferreiro$"))
     app.add_handler(CallbackQueryHandler(forja.forja, pattern="^forja$"))
@@ -150,11 +148,8 @@ def main():
     app.add_handler(CallbackQueryHandler(menu_viagem.menu_viagem, pattern="^menu_viagem$"))
     app.add_handler(CallbackQueryHandler(menu_viagem.viajar_para_local, pattern="^viajar_"))
     app.add_handler(CallbackQueryHandler(entradas_diarias.receber_itens_diarios, pattern="^receber_itens_diarios$"))
-    app.bot_data["menus"] = {
-        "menu_midtheim": menu_midtheim,
-    }
-    
-
+    app.add_handler(CallbackQueryHandler(menu_solvindr, pattern="^menu_solvindr"))
+    app.bot_data["menus"] = {"menu_midtheim": menu_midtheim, "menu_solvindr": menu_solvindr}
     app.run_polling()
 
 if __name__ == "__main__":

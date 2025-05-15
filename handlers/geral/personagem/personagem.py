@@ -9,8 +9,7 @@ async def mostrar_ficha(update: Update, context: CallbackContext):
     await query.edit_message_reply_markup(reply_markup=None)
 
     chat_id = str(query.from_user.id)
-    jogador_ref = db.reference(f"{chat_id}/Perfil")
-    jogador = jogador_ref.get()
+    jogador = db.reference(f"{chat_id}/Perfil").get()
 
     if not jogador:
         await query.message.reply_text("❌ Não foi possível encontrar seus dados.")
@@ -29,7 +28,7 @@ async def mostrar_ficha(update: Update, context: CallbackContext):
         [InlineKeyboardButton("🛡️ Equipamento", callback_data="equipamentos")],
         [InlineKeyboardButton("📊 Status", callback_data="status")],
         [InlineKeyboardButton("Entradas Diarias", callback_data="receber_itens_diarios")],
-        [InlineKeyboardButton("↩️ Voltar", callback_data="menu_midtheim")]
+        [InlineKeyboardButton("↩️ Voltar", callback_data=f"menu_{jogador.get("Local_Atual").lower()}")]
     ])
 
     await query.message.reply_text(text=texto, reply_markup=teclado, parse_mode="HTML")

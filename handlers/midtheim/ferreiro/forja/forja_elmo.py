@@ -11,7 +11,7 @@ QUALIDADES = [
     ("🔴", "Perfeito", 20),
     ("🟢", "Divino", 70),
 ]
-RECEITA = {"Joia_Criacao": 1, "Aco": 5, "Couro": 3, "Linha": 2}
+RECEITA = {"Joia_Criacao": 1, "Aco": 5, "Couro": 3, "La": 2}
 
 async def forja_elmo_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
