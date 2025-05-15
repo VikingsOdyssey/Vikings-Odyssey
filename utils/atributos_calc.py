@@ -1,5 +1,3 @@
-# utils/atributos_calc.py
-
 from utils.extrator_buffs import extrair_buffs
 from utils.equipamento_durabilidade import extrair_durabilidade, item_possui_durabilidade
 
@@ -34,21 +32,11 @@ def calcular_atributos(jogador_dict: dict, equipado_dict: dict) -> tuple[dict, i
     critico = atributos_finais.get("bencao") * 1.5
     atributo_ataque = atributos_base.get("atributo_ataque", "forca").lower()
     dano = atributos_finais.get(atributo_ataque)
-
     return atributos_finais, vida, agilidade, critico, dano
-
 
 def calcular_dano_com_reducao(base_dano, critado, atributo_ataque, atributos_defensor, classe_atacante, classe_defensor):
     dano = base_dano * 1.5 if critado else base_dano
+    resistencia = atributos_defensor.get(f"/{chat_id}/Atributos/atributo_ataque")
     resistencia = atributos_defensor.get("resistencia", 0)
-
-    # Exemplo de bonus de classe (ajuste conforme necessário)
-    if classe_atacante == "Mago" and classe_defensor == "Guerreiro":
-        dano *= 1.2
-    elif classe_atacante == "Guerreiro" and classe_defensor == "Arqueiro":
-        dano *= 1.2
-    elif classe_atacante == "Arqueiro" and classe_defensor == "Mago":
-        dano *= 1.2
-
     dano_final = max(0, int(dano - (resistencia / 2)))
     return dano_final

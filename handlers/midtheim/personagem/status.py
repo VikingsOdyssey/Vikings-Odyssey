@@ -35,12 +35,12 @@ async def mostrar_status(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # Lista de itens equipados (podem ser vazios)
     equipamentos = [
-        equipado.get("Arma", ""),
-        equipado.get("Elmo", ""),
-        equipado.get("Armadura", ""),
-        equipado.get("Calca", ""),
-        equipado.get("Bota", ""),
-        equipado.get("Amuleto", "")
+        equipado.get("Arma"),
+        equipado.get("Elmo"),
+        equipado.get("Armadura"),
+        equipado.get("Calca"),
+        equipado.get("Bota"),
+        equipado.get("Amuleto")
     ]
 
     # Aplica buffs de cada item
@@ -53,7 +53,7 @@ async def mostrar_status(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # Define o atributo de ataque com base na classe
     atributo_ataque_por_classe = {
-        "guardiao": "forca",
+        "guardião": "forca",
         "bárbaro": "furia",
         "lanceiro": "dominio",
         "caçador": "precisao",
@@ -61,13 +61,13 @@ async def mostrar_status(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "espadachim": "destreza"
     }
 
-    classe = perfil.get("Classe", "").lower()
+    classe = perfil.get("Classe").lower()
     atributo_chave = atributo_ataque_por_classe.get(classe)
-    atributo_ataque = atributos.get(atributo_chave, 0) if atributo_chave else 0
+    atributo_ataque = atributos.get(atributo_chave) if atributo_chave else 0
 
-    vida = atributos.get("resistencia", 0) * 3
-    agilidade = int(atributos.get("velocidade", 0) * 1.5)
-    critico = int(atributos.get("bencao", 0) * 1.5)
+    vida = atributos.get("resistencia") * 3
+    agilidade = int(atributos.get("velocidade") * 1.5)
+    critico = int(atributos.get("bencao") * 1.5)
     dano = atributo_ataque
 
     texto = ler_texto("../texts/midtheim/personagem/status.txt").format(
@@ -75,15 +75,15 @@ async def mostrar_status(update: Update, context: ContextTypes.DEFAULT_TYPE):
         agilidade=agilidade,
         critico=critico,
         dano=dano,
-        forca=atributos.get("forca", 0),
-        magia=atributos.get("magia", 0),
-        precisao=atributos.get("precisao", 0),
-        resistencia=atributos.get("resistencia", 0),
-        velocidade=atributos.get("velocidade", 0),
-        destreza=atributos.get("destreza", 0),
-        furia=atributos.get("furia", 0),
-        bencao=atributos.get("bencao", 0),
-        dominio=atributos.get("dominio", 0)
+        forca=atributos.get("forca"),
+        magia=atributos.get("magia"),
+        precisao=atributos.get("precisao"),
+        resistencia=atributos.get("resistencia"),
+        velocidade=atributos.get("velocidade"),
+        destreza=atributos.get("destreza"),
+        furia=atributos.get("furia"),
+        bencao=atributos.get("bencao"),
+        dominio=atributos.get("dominio")
     )
 
     teclado = InlineKeyboardMarkup([
