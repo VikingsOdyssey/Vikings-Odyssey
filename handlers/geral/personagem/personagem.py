@@ -28,6 +28,7 @@ async def mostrar_ficha(update: Update, context: CallbackContext):
         [InlineKeyboardButton("🎒 Inventário", callback_data="inventario")],
         [InlineKeyboardButton("🛡️ Equipamento", callback_data="equipamentos")],
         [InlineKeyboardButton("📊 Status", callback_data="status")],
+        [InlineKeyboardButton("Entradas Diarias", callback_data="receber_itens_diarios")],
         [InlineKeyboardButton("↩️ Voltar", callback_data="menu_midtheim")]
     ])
 

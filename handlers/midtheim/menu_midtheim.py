@@ -11,7 +11,13 @@ async def menu_midtheim(update: Update, context: ContextTypes.DEFAULT_TYPE):
         [InlineKeyboardButton("⚒️ Ferreiro de Brokk", callback_data="ferreiro")],
         [InlineKeyboardButton("📜 Missões de Yggdrasil", callback_data="coming_soon")],
         [InlineKeyboardButton("👤 Meu Personagem", callback_data="personagem")],
+        [InlineKeyboardButton("Viajar", callback_data="menu_viagem")],
         [InlineKeyboardButton("✨ Bênçãos de Odin (Conteúdo Pago)", callback_data="coming_soon")]
     ])
-    
-    await message.reply_text(text=texto, reply_markup=teclado, parse_mode="HTML")
+    try:
+        query = update.callback_query
+        await query.answer()
+        await query.edit_message_reply_markup(reply_markup=None)
+        await message.reply_text(text=texto, reply_markup=teclado, parse_mode="HTML")
+    except:
+        await message.reply_text(text=texto, reply_markup=teclado, parse_mode="HTML")

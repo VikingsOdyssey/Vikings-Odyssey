@@ -123,5 +123,9 @@ def criar_dados_iniciais(chat_id):
             "Calca": "",
             "Bota": "",
             "Amuleto": ""
+        },
+        "Recebimentos": {
+            "Entradas": "0000-00-00",
+            "Loot_diario": "0"
         }
     })

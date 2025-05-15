@@ -8,11 +8,13 @@ from firebase_admin import credentials, initialize_app, db
 from libs.classes import classes_atributos
 from handlers import coming_soon
 from handlers.midtheim.menu_midtheim import menu_midtheim
-from handlers.midtheim.personagem import personagem, inventario, status
-from handlers.midtheim.personagem.equipamentos import equipamentos, armas, elmo, armadura, calca, bota, amuleto
+from handlers.geral.personagem import entradas_diarias
+from handlers.geral.personagem import personagem, inventario, status
+from handlers.geral.personagem.equipamentos import equipamentos, armas, elmo, armadura, calca, bota, amuleto
 from handlers.midtheim.arena import arena, combate_amistoso, combate_rankeado, ranking
 from handlers.midtheim.ferreiro import ferreiro
 from handlers.midtheim.ferreiro.forja import forja, forja_arma, forja_elmo, forja_armadura, forja_calca, forja_bota
+from handlers.geral.viagem import menu_viagem
 from utils.firebase_utils import criar_dados_iniciais
 
 load_dotenv()
@@ -43,8 +45,15 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     jogador = jogador_ref.get()
 
     if jogador and jogador.get("Nome") != "A definir" and jogador.get("Classe") != "A definir":
-        await menu_midtheim(update, context)
-        return ConversationHandler.END
+        local_atual = jogador.get("Local_Atual", "Midtheim").lower()
+        func_name = f"menu_{local_atual}"
+        func = globals().get(func_name)
+        if callable(func):
+            await func(update, context)
+            return ConversationHandler.END
+        else:
+            await update.message.reply_text("Erro: localidade desconhecida.")
+            return ConversationHandler.END
 
     if not jogador:
         criar_dados_iniciais(f"{chat_id}")
@@ -138,6 +147,12 @@ def main():
     app.add_handler(CallbackQueryHandler(forja_calca.criar_calca, pattern="^criar_calca$"))
     app.add_handler(CallbackQueryHandler(forja_bota.forja_bota_menu, pattern="^forja_bota$"))
     app.add_handler(CallbackQueryHandler(forja_bota.criar_bota, pattern="^criar_bota$"))
+    app.add_handler(CallbackQueryHandler(menu_viagem.menu_viagem, pattern="^menu_viagem$"))
+    app.add_handler(CallbackQueryHandler(menu_viagem.viajar_para_local, pattern="^viajar_"))
+    app.add_handler(CallbackQueryHandler(entradas_diarias.receber_itens_diarios, pattern="^receber_itens_diarios$"))
+    app.bot_data["menus"] = {
+        "menu_midtheim": menu_midtheim,
+    }
     
 
     app.run_polling()
