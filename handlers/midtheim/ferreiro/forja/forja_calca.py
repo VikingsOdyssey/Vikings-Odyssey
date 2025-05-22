@@ -12,6 +12,7 @@ QUALIDADES = [
     ("🟢", "Divino", 70),
 ]
 RECEITA = {"Joia_Criacao": 1, "Couro": 4, "Aco": 3, "La": 3}
+XP_NECESSARIO = [0, 100, 200, 400, 600, 1200, 1800, 3600, 5400, 10800]
 
 async def forja_calca_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
@@ -55,7 +56,7 @@ async def criar_calca(update: Update, context: ContextTypes.DEFAULT_TYPE):
         ref.child("Inventario").child(recurso).set(inventario[recurso] - qtd)
 
     nivel_forja = perfil.get("Nivel_Forja", 1)
-    sucesso = random.randint(1, 100) <= min(50 + (nivel_forja - 1) * 5, 100)
+    sucesso = random.randint(1, 100) <= min(50 + (nivel_forja) * 5, 100)
 
     if sucesso:
         ref.child("Perfil/Xp_Forja").set(perfil.get("Xp_Forja", 0) + 10)
@@ -72,6 +73,24 @@ async def criar_calca(update: Update, context: ContextTypes.DEFAULT_TYPE):
             if calcas.get(f"Item{i}") == "":
                 ref.child(f"Equipamentos/Calcas/Item{i}").set(equipamento)
                 break
+
+        perfil_ref = db.reference(f"{chat_id}/Perfil")
+        perfil = perfil_ref.get()
+        xp_atual = perfil.get("Xp_Forja", 0)
+        nivel = perfil.get("Nivel_Forja", 1)
+        xp_atual = max(0, xp_atual)
+        # Verifica up de nível
+        xp_necessario = XP_NECESSARIO[nivel] if nivel < len(XP_NECESSARIO) else 999999
+        subiu_nivel = False
+        if xp_atual >= xp_necessario:
+            xp_atual = 0
+            nivel += 1
+            subiu_nivel = True
+
+        perfil_ref.update({
+            "Xp_Forja": xp_atual,
+            "Nivel_Forja": nivel
+    })
 
         await query.message.reply_text(
             f"🔥 <b>Forja Concluída!</b> 🔨\n"

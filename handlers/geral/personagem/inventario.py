@@ -13,6 +13,7 @@ async def mostrar_inventario(update: Update, context: ContextTypes.DEFAULT_TYPE)
     
     perfil = ref.child("Perfil").get()
     inventario = ref.child("Inventario").get()
+    loot = ref.child("Recebimentos").get()
 
     if not perfil or not inventario:
         await query.message.reply_text("❌ Não foi possível carregar os dados do inventário.")
@@ -28,11 +29,15 @@ async def mostrar_inventario(update: Update, context: ContextTypes.DEFAULT_TYPE)
         la=inventario.get("La", 0),
         couro=inventario.get("Couro", 0),
         criacao=inventario.get("Joia_Criacao", 0),
-        aperfeicoamento=inventario.get("Joia_Aperfeicoamento", 0)
+        aperfeicoamento=inventario.get("Joia_Aperfeicoamento", 0),
+        loot_diario=loot.get("Loot_diario"),
+        loot_cacada=loot.get("Loot_cacada")
     )
 
     teclado = InlineKeyboardMarkup([
         [InlineKeyboardButton("↩️ Voltar", callback_data="personagem")],
+        [InlineKeyboardButton("Abrir Loot Diario", callback_data="abrir_Loot_diario")],
+        [InlineKeyboardButton("Abrir Loot de Caçada", callback_data="abrir_Loot_cacada")],
         [InlineKeyboardButton("Menu", callback_data=f"menu_{perfil.get("Local_Atual").lower()}")]
     ])
 

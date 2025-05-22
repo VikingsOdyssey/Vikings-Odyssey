@@ -9,11 +9,15 @@
 • 🪵 Madeira: <i>{madeira}</i>
 • ⚔️ Aço: <i>{aco}</i>
 • 🪨 Pedra: <i>{pedra}</i>
-• 🧵 Linha: <i>{linha}</i>
+• 🧵 Lâ: <i>{la}</i>
 • 🐺 Couro: <i>{couro}</i>
 
 <b>🔮 Joias</b>
 • 🧬 Joia da Criação: <i>{criacao}</i>
 • 🛠️ Joia de Aperfeiçoamento: <i>{aperfeicoamento}</i>
+
+<b>Loot Box</b>
+• Loot Box Diaria: <i>{loot_diario}</i>
+• Loot Box de Caçada: <i>{loot_cacada}</i>
 
 <b>🧭 Que tua mochila pese com propósito e não com inutilidades.</b>

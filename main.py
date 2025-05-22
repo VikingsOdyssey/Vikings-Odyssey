@@ -14,6 +14,7 @@ from handlers.geral.viagem import menu_viagem
 from handlers.geral.personagem import entradas_diarias
 from handlers.geral.personagem import personagem, inventario, status
 from handlers.geral.personagem.equipamentos import equipamentos, armas, elmo, armadura, calca, bota, amuleto
+from handlers.geral.loot_box import loot_open
 # imports Midtheim
 from handlers.midtheim.menu_midtheim import menu_midtheim
 from handlers.midtheim.arena import arena, combate_amistoso, combate_rankeado, ranking
@@ -154,6 +155,7 @@ def main():
     app.add_handler(CallbackQueryHandler(cacada.menu_cacada, pattern="^menu_cacada$"))
     app.add_handler(CallbackQueryHandler(cacada.iniciar_cacada, pattern="^iniciar_cacada$"))
     app.add_handler(CallbackQueryHandler(cacada.atacar_mob, pattern="^atacar_mob$"))
+    app.add_handler(CallbackQueryHandler(loot_open.abrir_lootbox, pattern="^abrir_"))
 
     app.bot_data["menus"] = {"menu_midtheim": menu_midtheim, "menu_solvindr": menu_solvindr}
     app.run_polling()

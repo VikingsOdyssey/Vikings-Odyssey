@@ -21,6 +21,8 @@ ARMAS_POR_CLASSE = {
     "Arcano": "Cedro de Mímir"
 }
 
+XP_NECESSARIO = [0, 100, 200, 400, 600, 1200, 1800, 3600, 5400, 10800]
+
 async def forja_armas_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
@@ -56,7 +58,7 @@ async def criar_arma(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     nivel_forja = perfil["Nivel_Forja"]
-    chance_sucesso = min(50 + (nivel_forja - 1) * 5, 100)
+    chance_sucesso = min(50 + (nivel_forja) * 5, 100)
     sucesso = random.randint(1, 100) <= chance_sucesso
 
     # Consome recursos
@@ -86,6 +88,24 @@ async def criar_arma(update: Update, context: ContextTypes.DEFAULT_TYPE):
             if not armas.get(slot):
                 armas_ref.child(slot).set(equipamento)
                 break
+        
+        perfil_ref = db.reference(f"{chat_id}/Perfil")
+        perfil = perfil_ref.get()
+        xp_atual = perfil.get("Xp_Forja", 0)
+        nivel = perfil.get("Nivel_Forja", 1)
+        xp_atual = max(0, xp_atual)
+        # Verifica up de nível
+        xp_necessario = XP_NECESSARIO[nivel] if nivel < len(XP_NECESSARIO) else 999999
+        subiu_nivel = False
+        if xp_atual >= xp_necessario:
+            xp_atual = 0
+            nivel += 1
+            subiu_nivel = True
+
+        perfil_ref.update({
+            "Xp_Forja": xp_atual,
+            "Nivel_Forja": nivel
+    })
 
         await query.message.reply_text(
             f"🔥 <b>Forja Concluída!</b> 🔨\n"

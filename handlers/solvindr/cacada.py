@@ -35,15 +35,15 @@ def calcular_atributos_mob(mob):
         "vida": atributos.get("resistencia") * 3,
         "dano": atributos.get(mob.get("atributo_ataque")),
         "agilidade": int(atributos.get("velocidade") * 1.5),
-        "critico": atributos.get("precisao") * 1.5,
+        "critico": atributos.get("bencao") * 1.5,
         "atributos": atributos
     }
 
 async def menu_cacada(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
-    chat_id = str(query.from_user.id)
     await query.edit_message_reply_markup(reply_markup=None)
+    chat_id = str(query.from_user.id)
     texto = ler_texto("../texts/solvindr/cacada.txt")
     local = db.reference(f"{chat_id}/Perfil/Local_Atual").get().lower()
     teclado = InlineKeyboardMarkup([
@@ -56,6 +56,7 @@ async def menu_cacada(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def iniciar_cacada(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
+    await query.edit_message_reply_markup(reply_markup=None)
     chat_id = str(query.from_user.id)
     entradas_ref = db.reference(f"{chat_id}/Entradas")
     entradas = entradas_ref.get()
@@ -96,9 +97,9 @@ async def iniciar_cacada(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return COMBATE
 
 async def atacar_mob(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    print('inicio do Combate:')
     query = update.callback_query
     await query.answer()
+    await query.edit_message_reply_markup(reply_markup=None)
     chat_id = str(query.from_user.id)
     perfil = db.reference(f"{chat_id}/Perfil").get()
     atributos = db.reference(f"{chat_id}/Atributos").get()
@@ -202,6 +203,5 @@ async def atacar_mob(update: Update, context: ContextTypes.DEFAULT_TYPE):
         [InlineKeyboardButton("🐺 Caçar", callback_data="iniciar_cacada")],
         [InlineKeyboardButton("↩️ Voltar", callback_data=f"menu_{local}")]
     ])
-    print('Fim do Combate\n\n')
     await query.message.reply_text(texto_resultado, reply_markup=teclado, parse_mode="HTML")
     return ConversationHandler.END
