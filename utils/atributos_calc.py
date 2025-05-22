@@ -30,13 +30,15 @@ def calcular_atributos(jogador_dict: dict, equipado_dict: dict) -> tuple[dict, i
     vida = atributos_finais.get("resistencia") * 3
     agilidade = int(atributos_finais.get("velocidade") * 1.5)
     critico = atributos_finais.get("bencao") * 1.5
-    atributo_ataque = atributos_base.get("atributo_ataque", "forca").lower()
+    atributo_ataque = atributos_base.get("atributo_ataque").lower()
     dano = atributos_finais.get(atributo_ataque)
     return atributos_finais, vida, agilidade, critico, dano
 
 def calcular_dano_com_reducao(base_dano, critado, atributo_ataque, atributos_defensor, classe_atacante, classe_defensor):
     dano = base_dano * 1.5 if critado else base_dano
-    resistencia = atributos_defensor.get(f"/{chat_id}/Atributos/atributo_ataque")
-    resistencia = atributos_defensor.get("resistencia", 0)
+    if classe_atacante == classe_defensor:
+        resistencia = 0
+    else:
+        resistencia = atributos_defensor.get(atributo_ataque)
     dano_final = max(0, int(dano - (resistencia / 2)))
     return dano_final

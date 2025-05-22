@@ -15,9 +15,7 @@ async def menu_viagem(update: Update, context: ContextTypes.DEFAULT_TYPE):
         [InlineKeyboardButton("🏞 Planícies de Modrheim", callback_data="coming_soon")],
         [InlineKeyboardButton("🌲 Floresta de Yggdreth", callback_data="coming_soon")],
         [InlineKeyboardButton("🔥 Deserto de Aska", callback_data="coming_soon")],
-        [InlineKeyboardButton("👤 Meu Personagem", callback_data="coming_soon")],
-        [InlineKeyboardButton("🌊 Costa de Skjovik", callback_data="coming_soon")],
-        [InlineKeyboardButton("🦠 Pântanos Hrimgard", callback_data="coming_soon")]
+        [InlineKeyboardButton("🌊 Costa de Skjovik", callback_data="coming_soon")]
     ])
     
     await message.reply_text(text=texto, reply_markup=teclado, parse_mode="HTML")

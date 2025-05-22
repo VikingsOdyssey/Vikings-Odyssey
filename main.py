@@ -11,16 +11,18 @@ from utils.firebase_utils import criar_dados_iniciais
 # imports gerais
 from handlers import coming_soon
 from handlers.geral.viagem import menu_viagem
-# imports Midtheim
-from handlers.midtheim.menu_midtheim import menu_midtheim
 from handlers.geral.personagem import entradas_diarias
 from handlers.geral.personagem import personagem, inventario, status
 from handlers.geral.personagem.equipamentos import equipamentos, armas, elmo, armadura, calca, bota, amuleto
+# imports Midtheim
+from handlers.midtheim.menu_midtheim import menu_midtheim
 from handlers.midtheim.arena import arena, combate_amistoso, combate_rankeado, ranking
 from handlers.midtheim.ferreiro import ferreiro
 from handlers.midtheim.ferreiro.forja import forja, forja_arma, forja_elmo, forja_armadura, forja_calca, forja_bota
 # imports Solvindr
 from handlers.solvindr.menu_solvindr import menu_solvindr
+from handlers.solvindr import cacada
+
 
 load_dotenv()
 
@@ -149,6 +151,10 @@ def main():
     app.add_handler(CallbackQueryHandler(menu_viagem.viajar_para_local, pattern="^viajar_"))
     app.add_handler(CallbackQueryHandler(entradas_diarias.receber_itens_diarios, pattern="^receber_itens_diarios$"))
     app.add_handler(CallbackQueryHandler(menu_solvindr, pattern="^menu_solvindr"))
+    app.add_handler(CallbackQueryHandler(cacada.menu_cacada, pattern="^menu_cacada$"))
+    app.add_handler(CallbackQueryHandler(cacada.iniciar_cacada, pattern="^iniciar_cacada$"))
+    app.add_handler(CallbackQueryHandler(cacada.atacar_mob, pattern="^atacar_mob$"))
+
     app.bot_data["menus"] = {"menu_midtheim": menu_midtheim, "menu_solvindr": menu_solvindr}
     app.run_polling()
 

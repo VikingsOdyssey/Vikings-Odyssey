@@ -22,7 +22,7 @@ async def menu_solvindr(update: Update, context: ContextTypes.DEFAULT_TYPE):
         case "5753061231":
             teclado = InlineKeyboardMarkup([
                 [InlineKeyboardButton("Adm", callback_data="adm")],
-                [InlineKeyboardButton("Caçada", callback_data="coming_soon")],
+                [InlineKeyboardButton("🐺 Caçada", callback_data="menu_cacada")],
                 [InlineKeyboardButton("Caverna", callback_data="coming_soon")],
                 [InlineKeyboardButton("Dungeon", callback_data="coming_soon")],
                 [InlineKeyboardButton("Pastorear Ovelhas", callback_data="coming_soon")],
@@ -32,7 +32,7 @@ async def menu_solvindr(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
         case _:
             teclado = InlineKeyboardMarkup([
-                [InlineKeyboardButton("Caçada", callback_data="coming_soon")],
+                [InlineKeyboardButton("🐺 Caçada", callback_data="menu_cacada")],
                 [InlineKeyboardButton("Caverna", callback_data="coming_soon")],
                 [InlineKeyboardButton("Dungeon", callback_data="coming_soon")],
                 [InlineKeyboardButton("Pastorear Ovelhas", callback_data="coming_soon")],
