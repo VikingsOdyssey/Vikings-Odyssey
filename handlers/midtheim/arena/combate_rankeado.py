@@ -106,7 +106,6 @@ async def iniciar_arena_rankeada(update: Update, context: ContextTypes.DEFAULT_T
     else:
         resultado = "Empate"
 
-    registrar_uso_de_equipado(chat_id, db_ref)
     jogador_data["Equipado"] = db_ref.child(f"{chat_id}/Equipado").get()
     danificados = extrair_equipamentos_danificados(jogador_data["Equipado"])
     texto_danificados = ""
@@ -146,4 +145,5 @@ async def iniciar_arena_rankeada(update: Update, context: ContextTypes.DEFAULT_T
     ])
 
     await update.callback_query.message.reply_text(texto, reply_markup=teclado, parse_mode="HTML")
+    registrar_uso_de_equipado(chat_id, db_ref)
     return ConversationHandler.END
