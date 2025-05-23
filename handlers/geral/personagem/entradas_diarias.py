@@ -28,10 +28,8 @@ async def receber_itens_diarios(update: Update, context: ContextTypes.DEFAULT_TY
         "Caverna": 3,
         "Arena": 10
     })
-    loot_ref = db.reference(f"{chat_id}/Recebimentos")
-    loot_ref.set({
-        "Loot_diario": 1,
-    })
+    loot_ref = db.reference(f"{chat_id}/Recebimentos/Loot_diario")
+    loot_ref.set(1)
 
     diario_ref.set(data_hoje)
 

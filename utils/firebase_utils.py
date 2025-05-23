@@ -31,10 +31,10 @@ def criar_dados_iniciais(chat_id):
             "Madeira": 0,
             "Aco": 0,
             "Pedra": 0,
-            "Linha": 0,
             "Couro": 0,
             "Joia_Criacao": 0,
             "Joia_Aperfeicoamento": 0
+            "La": 0,
         },
         "Entradas": {
             "Cacada": 0,
@@ -126,6 +126,7 @@ def criar_dados_iniciais(chat_id):
         },
         "Recebimentos": {
             "Entradas": "0000-00-00",
-            "Loot_diario": "0"
+            "Loot_diario": 0,
+            "Loot_cacada": 0
         }
     })
