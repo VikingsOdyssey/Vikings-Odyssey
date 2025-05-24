@@ -21,7 +21,7 @@ async def mostrar_armas(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     teclado = InlineKeyboardMarkup([
         [InlineKeyboardButton(f"Item {i:02}", callback_data=f"Arma{i}")] for i in range(1, 11)
-    ] + [[InlineKeyboardButton("Desequipar", callback_data="desequipar_arma")]])
+    ] + [[InlineKeyboardButton("Desequipar", callback_data="desequipar_armas")]])
 
     await query.message.reply_text(text=texto, reply_markup=teclado, parse_mode="HTML")
 
@@ -42,7 +42,7 @@ async def selecionar_arma(update: Update, context: ContextTypes.DEFAULT_TYPE):
     equipado = ref_equipado.get() or {}
 
    # Desequipar
-    if escolha == "desequipar_arma":
+    if escolha == "desequipar_armas":
         texto = mover_equipamento_para_inventario(ref_armas, ref_equipado, "Arma")
         teclado = teclado_pos_equipar()
         await query.message.reply_text(text=texto, reply_markup=teclado, parse_mode="HTML")

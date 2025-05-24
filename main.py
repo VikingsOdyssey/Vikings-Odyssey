@@ -121,7 +121,7 @@ def main():
     app.add_handler(CallbackQueryHandler(status.mostrar_status, pattern="^status$"))
     app.add_handler(CallbackQueryHandler(equipamentos.mostrar_equipamentos, pattern="^equipamentos$"))
     app.add_handler(CallbackQueryHandler(armas.mostrar_armas, pattern="^arma$"))
-    app.add_handler(CallbackQueryHandler(armas.selecionar_arma, pattern="^(Arma[0-9]+|desequipar_arma)"))
+    app.add_handler(CallbackQueryHandler(armas.selecionar_arma, pattern="^(Arma[0-9]+|desequipar_armas)"))
     app.add_handler(CallbackQueryHandler(elmo.mostrar_elmos, pattern="^elmo$"))
     app.add_handler(CallbackQueryHandler(elmo.selecionar_elmo, pattern="^(Elmo[0-9]+|desequipar_elmo)"))
     app.add_handler(CallbackQueryHandler(armadura.mostrar_armaduras, pattern="^armadura$"))

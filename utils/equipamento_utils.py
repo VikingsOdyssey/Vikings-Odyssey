@@ -15,12 +15,19 @@ def mover_equipamento_para_inventario(inventario_ref, equipado_ref, tipo):
     inventario = inventario_ref.get()
 
     item_atual = equipado.get(tipo)
+    match tipo:
+        case str("Arma"):
+            x = "uma"
+        case str("Armadura"):
+            x = "uma"
+        case _:
+            x = "um"
     if not item_atual:
-        return "Você não está com um amuleto equipado!"
+        return f"Você não está com {x} {tipo} equipado!"
 
     slot_vazio = encontrar_primeiro_slot_vazio(inventario)
     if not slot_vazio:
-        return "Seu inventário de amuletos está cheio!"
+        return f"Seu inventário de {tipo} está cheio!"
 
     # Atualiza dados no Firebase
     inventario_ref.child(slot_vazio).set(item_atual)
