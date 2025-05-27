@@ -115,11 +115,12 @@ async def iniciar_arena_rankeada(update: Update, context: ContextTypes.DEFAULT_T
         texto_danificados = "\n⚠️ Os seguintes equipamentos estavam danificados e foram ignorados:\n"
         texto_danificados += "\n".join(f"• {d}" for d in danificados)
 
+    loots = f"{'\n📦 Loot de caçada recebido!\n' if loot else ''}"
     jogador_data["Entradas"]["Arena"] -= 1
     db_ref.child(chat_id).update(jogador_data)
     db_ref.child(op_chat_id).child("Perfil").child("Rank").set(oponente["Perfil"]["Rank"])
 
-    texto = ler_texto("../texts/midtheim/arena/combate_ranqueado.txt" f"{'\n📦 Loot de caçada recebido!\n' if loot else ''}").format(
+    texto = ler_texto("../texts/midtheim/arena/combate_ranqueado.txt").format(
         resultado=resultado,
         Nome=jogador_data["Perfil"]["Nome"],
         Classe=jogador_data["Perfil"]["Classe"],
@@ -138,7 +139,7 @@ async def iniciar_arena_rankeada(update: Update, context: ContextTypes.DEFAULT_T
         Pontos_Atualizados=jogador_data["Perfil"]["Rank"],
         Pontos_Oponente_Ant=Pontos_Oponente_Ant,
         Pontos_Oponente_Novo=oponente["Perfil"]["Rank"]
-    ) + texto_danificados
+    ) + loots + texto_danificados
 
     teclado = InlineKeyboardMarkup([
         [InlineKeyboardButton("Proxímo", callback_data="arena_rankeado")],
