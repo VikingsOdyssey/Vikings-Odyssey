@@ -180,7 +180,7 @@ async def atacar_mob(update: Update, context: ContextTypes.DEFAULT_TYPE):
     })
 
     # Atualiza inventário com moedas e loot
-    loot_calc = random.random() <= 0.4
+    loot_calc = random.random() <= 0.3
     inventario = inventario_ref.get()
     inventario_ref.update({"Moedas": inventario.get("Moedas") + (ganho_moedas if venceu else 0)})
     loot = loot_ref.get()

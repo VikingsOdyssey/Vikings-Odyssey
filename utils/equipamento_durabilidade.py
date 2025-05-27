@@ -40,3 +40,18 @@ def registrar_uso_de_equipado(chat_id: str, db_ref):
         atualizado[tipo] = reduzir_durabilidade(item)
 
     equipado_ref.update(atualizado)
+
+def reparar_simples(item: str) -> str:
+    if not item_possui_durabilidade(item):
+        return item
+    atual, maxima = extrair_durabilidade(item)
+    novo_valor = min(atual + 10, maxima)
+    item_sem_durabilidade = DURABILIDADE_REGEX.sub("", item).strip()
+    return f"[{novo_valor}/{maxima}] {item_sem_durabilidade}"
+
+def reparar_completo(item: str) -> str:
+    if not item_possui_durabilidade(item):
+        return item
+    _, maxima = extrair_durabilidade(item)
+    item_sem_durabilidade = DURABILIDADE_REGEX.sub("", item).strip()
+    return f"[{maxima}/{maxima}] {item_sem_durabilidade}"

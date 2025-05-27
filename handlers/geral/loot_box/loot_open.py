@@ -22,6 +22,10 @@ LOOT_BOXES = {
         "Aco": (0, 3),
         "Pedra": (0, 3),
     },
+    "Loot_arena": {
+        "Joia_Criacao": (0, 2),
+        "Joia_Reparo": (0, 2)
+    }
     # Adicione mais loot boxes aqui conforme necessidade
 }
 
@@ -71,6 +75,7 @@ async def abrir_lootbox(update: Update, context: ContextTypes.DEFAULT_TYPE):
         teclado = InlineKeyboardMarkup([
         [InlineKeyboardButton("Abrir Loot Diario", callback_data="abrir_Loot_diario")],
         [InlineKeyboardButton("Abrir Loot de Caçada", callback_data="abrir_Loot_cacada")],
+        [InlineKeyboardButton("Abrir Loot de Arena", callback_data="abrir_Loot_arena")],
         [InlineKeyboardButton("↩️ Voltar", callback_data="inventario")],
         [InlineKeyboardButton("Menu", callback_data=f"menu_{perfil.get("Local_Atual").lower()}")]
     ])

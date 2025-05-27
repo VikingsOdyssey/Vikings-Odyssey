@@ -29,15 +29,18 @@ async def mostrar_inventario(update: Update, context: ContextTypes.DEFAULT_TYPE)
         la=inventario.get("La", 0),
         couro=inventario.get("Couro", 0),
         criacao=inventario.get("Joia_Criacao", 0),
+        reparo=inventario.get("Joia_Reparo"),
         aperfeicoamento=inventario.get("Joia_Aperfeicoamento", 0),
         loot_diario=loot.get("Loot_diario"),
-        loot_cacada=loot.get("Loot_cacada")
+        loot_cacada=loot.get("Loot_cacada"),
+        loot_arena=loot.get("Loot_arena")
     )
 
     teclado = InlineKeyboardMarkup([
         [InlineKeyboardButton("↩️ Voltar", callback_data="personagem")],
         [InlineKeyboardButton("Abrir Loot Diario", callback_data="abrir_Loot_diario")],
         [InlineKeyboardButton("Abrir Loot de Caçada", callback_data="abrir_Loot_cacada")],
+        [InlineKeyboardButton("Abrir Loot de Arena", callback_data="abrir_Loot_arena")],
         [InlineKeyboardButton("Menu", callback_data=f"menu_{perfil.get("Local_Atual").lower()}")]
     ])
 

@@ -1,16 +1,15 @@
-<b>🏰 Bem-vindo a Midtheim</b>
+<b>🏰 Bem-vindo a Midtheim, viajante.</b>
 
-No coração dos Reinos Esquecidos ergue-se Midtheim — a última chama da civilização entre as sombras do mundo antigo.
+No coração dos Reinos Esquecidos ergue-se Midtheim — a última chama da civilização, resistindo firme entre as ruínas do mundo antigo.  
+Protegida por muralhas ancestrais e abençoada pelos deuses antigos ✨, esta cidade é o refúgio dos bravos e o ponto de partida dos que desafiam o próprio destino ⚔️.
 
-Guardada por muralhas ancestrais e abençoada pelos deuses, esta cidade é o ponto de partida dos que ousam desafiar o destino ⚔️.
+Aqui, tu encontrarás abrigo, aço... sabedoria ancestral e perigos que testarão até os corações mais endurecidos:
 
-Aqui, viajante, tu encontrarás abrigo, aço, sabedoria… e desafios à altura de tua coragem:
-
-<b>Arena</b> 🥊 – Prove tua força em duelos e torneios.  
-<b>Mercado</b> 💰 – Negocie itens, recursos e relíquias raras.  
-<b>Ferreiro</b> 🔨 – Forje e aprimore teus equipamentos.  
-<b>Missões</b> 📜 – Aceite tarefas e ganhe glória.  
-<b>Personagem</b> 🧙 – Revise tua ficha e teus equipamentos.  
-<b>Conteúdo Pago</b> 💎 – Apoie o projeto e desbloqueie extras.
+<b>Arena</b> 🥊 – Enfrenta guerreiros e monstros em duelos de honra e torneios sangrentos.  
+<b>Mercado</b> 💰 – Troca artefatos, recursos valiosos e relíquias esquecidas por ouro ou vantagem.  
+<b>Ferreiro</b> 🔨 – Forja teu legado com armas poderosas e armaduras lendárias.  
+<b>Missões</b> 📜 – Aceita tarefas sagradas (ou nem tanto) e conquista glória e recompensas.  
+<b>Personagem</b> 🧙 – Revê tua ficha, teus equipamentos e fortalece tua jornada.  
+<b>Conteúdo Pago</b> 💎 – Apoia este mundo e desbloqueia segredos além do véu.
 
 <i>Midtheim é teu lar… por enquanto.</i>

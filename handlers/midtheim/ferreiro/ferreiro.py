@@ -9,7 +9,7 @@ async def ferreiro(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message = update.message or update.callback_query.message
     teclado = InlineKeyboardMarkup([
         [InlineKeyboardButton("Forja", callback_data="forja")],
-        [InlineKeyboardButton("Reparo", callback_data="coming_soon")],
+        [InlineKeyboardButton("Reparo", callback_data="menu_reparo")],
         [InlineKeyboardButton("Desmache", callback_data="coming_soon")],
     ])
     

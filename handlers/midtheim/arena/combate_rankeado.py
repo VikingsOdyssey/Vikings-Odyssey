@@ -96,8 +96,10 @@ async def iniciar_arena_rankeada(update: Update, context: ContextTypes.DEFAULT_T
         log += "\n"
 
     if vida1 > vida2:
+        loot = random.random() <= 0.3
         resultado = f"{jogador_data['Perfil']['Nome']} venceu"
         jogador_data["Perfil"]["Rank"] += 3
+        jogador_data["Recebimentos"]["Loot_arena"] += (1 if loot else 0)
         oponente["Perfil"]["Rank"] = max(0, oponente["Perfil"]["Rank"] - 1)
     elif vida2 > vida1:
         resultado = f"{oponente['Perfil']['Nome']} venceu"
@@ -117,7 +119,7 @@ async def iniciar_arena_rankeada(update: Update, context: ContextTypes.DEFAULT_T
     db_ref.child(chat_id).update(jogador_data)
     db_ref.child(op_chat_id).child("Perfil").child("Rank").set(oponente["Perfil"]["Rank"])
 
-    texto = ler_texto("../texts/midtheim/arena/combate_ranqueado.txt").format(
+    texto = ler_texto("../texts/midtheim/arena/combate_ranqueado.txt" f"{'\n📦 Loot de caçada recebido!\n' if loot else ''}").format(
         resultado=resultado,
         Nome=jogador_data["Perfil"]["Nome"],
         Classe=jogador_data["Perfil"]["Classe"],

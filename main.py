@@ -19,6 +19,7 @@ from handlers.geral.loot_box import loot_open
 from handlers.midtheim.menu_midtheim import menu_midtheim
 from handlers.midtheim.arena import arena, combate_amistoso, combate_rankeado, ranking
 from handlers.midtheim.ferreiro import ferreiro
+from handlers.midtheim.ferreiro.reparo import reparo
 from handlers.midtheim.ferreiro.forja import forja, forja_arma, forja_elmo, forja_armadura, forja_calca, forja_bota
 # imports Solvindr
 from handlers.solvindr.menu_solvindr import menu_solvindr
@@ -151,11 +152,13 @@ def main():
     app.add_handler(CallbackQueryHandler(menu_viagem.menu_viagem, pattern="^menu_viagem$"))
     app.add_handler(CallbackQueryHandler(menu_viagem.viajar_para_local, pattern="^viajar_"))
     app.add_handler(CallbackQueryHandler(entradas_diarias.receber_itens_diarios, pattern="^receber_itens_diarios$"))
-    app.add_handler(CallbackQueryHandler(menu_solvindr, pattern="^menu_solvindr"))
+    app.add_handler(CallbackQueryHandler(menu_solvindr, pattern="^menu_solvindr$"))
     app.add_handler(CallbackQueryHandler(cacada.menu_cacada, pattern="^menu_cacada$"))
     app.add_handler(CallbackQueryHandler(cacada.iniciar_cacada, pattern="^iniciar_cacada$"))
     app.add_handler(CallbackQueryHandler(cacada.atacar_mob, pattern="^atacar_mob$"))
     app.add_handler(CallbackQueryHandler(loot_open.abrir_lootbox, pattern="^abrir_"))
+    app.add_handler(CallbackQueryHandler(reparo.menu_reparo, pattern="^menu_reparo$"))
+    app.add_handler(CallbackQueryHandler(reparo.executar_reparo, pattern="^reparo_"))
 
     app.bot_data["menus"] = {"menu_midtheim": menu_midtheim, "menu_solvindr": menu_solvindr}
     app.run_polling()
