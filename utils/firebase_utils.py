@@ -33,7 +33,7 @@ def criar_dados_iniciais(chat_id):
             "Pedra": 0,
             "Couro": 0,
             "Joia_Criacao": 0,
-            "Joia_Aperfeicoamento": 0
+            "Joia_Aperfeicoamento": 0,
             "La": 0,
         },
         "Entradas": {
