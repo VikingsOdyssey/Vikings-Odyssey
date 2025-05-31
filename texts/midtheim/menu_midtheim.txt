@@ -13,3 +13,8 @@ Aqui, tu encontrarás abrigo, aço... sabedoria ancestral e perigos que testarã
 <b>Conteúdo Pago</b> 💎 – Apoia este mundo e desbloqueia segredos além do véu.
 
 <i>Midtheim é teu lar… por enquanto.</i>
+
+Seus dados  
+🆙 - Level: {level}
+ᚠ  - Moedas: {moedas}ᚠ
+🏟️ - Arena: {arena}
