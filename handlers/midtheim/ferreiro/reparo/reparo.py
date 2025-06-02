@@ -19,6 +19,8 @@ async def menu_reparo(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def executar_reparo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
+    await query.answer()
+    await query.edit_message_reply_markup(reply_markup=None)
     tipo = query.data
     chat_id = str(query.from_user.id)
 
@@ -28,6 +30,9 @@ async def executar_reparo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     equipado = eqp_ref.get()
 
     equipamentos_atualizados = {}
+    teclado = InlineKeyboardMarkup([
+        [InlineKeyboardButton("🔙 Voltar", callback_data="menu_reparo")]
+    ])
 
     if tipo == "reparo_simples":
         if inventario["Moedas"] < 100:
@@ -51,4 +56,4 @@ async def executar_reparo(update: Update, context: ContextTypes.DEFAULT_TYPE):
         mensagem = "💎 Seus equipamentos foram totalmente restaurados (durabilidade máxima)."
 
     eqp_ref.update(equipamentos_atualizados)
-    await query.message.reply_text(mensagem)
+    await query.message.reply_text(text=mensagem, reply_markup=teclado)

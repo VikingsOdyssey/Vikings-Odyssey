@@ -101,12 +101,15 @@ async def iniciar_arena_rankeada(update: Update, context: ContextTypes.DEFAULT_T
         jogador_data["Perfil"]["Rank"] += 3
         jogador_data["Recebimentos"]["Loot_arena"] += (1 if loot else 0)
         oponente["Perfil"]["Rank"] = max(0, oponente["Perfil"]["Rank"] - 1)
+        r = "v"
     elif vida2 > vida1:
         resultado = f"{oponente['Perfil']['Nome']} venceu"
         jogador_data["Perfil"]["Rank"] = max(0, jogador_data["Perfil"]["Rank"] - 1)
         oponente["Perfil"]["Rank"] += 3
+        r = "d"
     else:
         resultado = "Empate"
+        r = "e"
 
     jogador_data["Equipado"] = db_ref.child(f"{chat_id}/Equipado").get()
     danificados = extrair_equipamentos_danificados(jogador_data["Equipado"])
@@ -115,7 +118,11 @@ async def iniciar_arena_rankeada(update: Update, context: ContextTypes.DEFAULT_T
         texto_danificados = "\n⚠️ Os seguintes equipamentos estavam danificados e foram ignorados:\n"
         texto_danificados += "\n".join(f"• {d}" for d in danificados)
 
-    loots = f"{'\n📦 Loot de caçada recebido!\n' if loot else ''}"
+    match r:
+        case "v":
+            loots = f"{'\n📦 Loot de caçada recebido!\n' if loot else ''}"
+        case _:
+            loots = ""
     jogador_data["Entradas"]["Arena"] -= 1
     db_ref.child(chat_id).update(jogador_data)
     db_ref.child(op_chat_id).child("Perfil").child("Rank").set(oponente["Perfil"]["Rank"])

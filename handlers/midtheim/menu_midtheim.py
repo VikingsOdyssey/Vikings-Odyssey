@@ -1,5 +1,6 @@
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
+from firebase_admin import db
 from utils.ler_texto import ler_texto # type: ignore
 
 async def menu_midtheim(update: Update, context: ContextTypes.DEFAULT_TYPE):
