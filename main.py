@@ -19,6 +19,7 @@ from handlers.midtheim.ferreiro import ferreiro
 from handlers.midtheim.ferreiro.reparo import reparo
 from handlers.midtheim.ferreiro.desmanche import desmanche
 from handlers.midtheim.ferreiro.forja import forja, forja_arma, forja_elmo, forja_armadura, forja_calca, forja_bota
+from handlers.midtheim.ferreiro.aprimoramento import aprimoramento
 from handlers.solvindr.menu_solvindr import menu_solvindr
 from handlers.solvindr import cacada
 
@@ -138,6 +139,9 @@ def main():
     app.add_handler(CallbackQueryHandler(desmanche.menu_desmanche, pattern="^desmanche_menu$"))
     app.add_handler(CallbackQueryHandler(desmanche.escolher_tipo, pattern="^desmanche_tipo_"))
     app.add_handler(CallbackQueryHandler(desmanche.desmontar_item, pattern="^desmanche_item_"))
+    app.add_handler(CallbackQueryHandler(aprimoramento.menu_aprimoramento, pattern="^up$"))
+    app.add_handler(CallbackQueryHandler(aprimoramento.selecionar_equipamento, pattern="^aprimorar_"))
+    app.add_handler(CallbackQueryHandler(aprimoramento.confirmar_aprimoramento, pattern="^1aprimorar_item_"))
     app.bot_data["menus"] = {"menu_midtheim": menu_midtheim, "menu_solvindr": menu_solvindr}
     app.run_polling()
 
