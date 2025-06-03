@@ -80,9 +80,15 @@ async def escolher_classe(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 def main():
     app = Application.builder().token(os.getenv("BOT_TOKEN")).build()
-    app.add_handler(CommandHandler("start", start))
-    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, receber_nome))
-    app.add_handler(CallbackQueryHandler(escolher_classe))
+    conv_handler = ConversationHandler(
+        entry_points=[CommandHandler("start", start)],
+        states={
+            NOME: [MessageHandler(filters.TEXT & ~filters.COMMAND, receber_nome)],
+            CLASSE: [CallbackQueryHandler(escolher_classe)],
+        },
+        fallbacks=[],
+    )
+    app.add_handler(conv_handler)
     app.add_handler(CallbackQueryHandler(start, pattern="^start$"))
     app.add_handler(CallbackQueryHandler(coming_soon.coming_soon, pattern="^coming_soon$"))
     app.add_handler(CallbackQueryHandler(menu_midtheim, pattern="^menu_midtheim$"))
