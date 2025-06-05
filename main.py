@@ -20,11 +20,13 @@ from handlers.midtheim.ferreiro.reparo import reparo
 from handlers.midtheim.ferreiro.desmanche import desmanche
 from handlers.midtheim.ferreiro.forja import forja, forja_arma, forja_elmo, forja_armadura, forja_calca, forja_bota
 from handlers.midtheim.ferreiro.aprimoramento import aprimoramento
+from handlers.midtheim.mercado import menu_mercado, comprar
+from handlers.midtheim.mercado.vender import menu_venda, vender_item, vender_equipamento
 from handlers.solvindr.menu_solvindr import menu_solvindr
 from handlers.solvindr import cacada
 
 load_dotenv()
-firebase_cred = credentials.Certificate("firebase_config.json")
+firebase_cred = credentials.Certificate("../firebase_config.json")
 initialize_app(firebase_cred, {'databaseURL': os.getenv("FIREBASE_DB_URL")})
 
 NOME, CLASSE = range(2)
@@ -81,15 +83,7 @@ async def escolher_classe(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 def main():
     app = Application.builder().token(os.getenv("BOT_TOKEN")).build()
-    conv_handler = ConversationHandler(
-        entry_points=[CommandHandler("start", start)],
-        states={
-            NOME: [MessageHandler(filters.TEXT & ~filters.COMMAND, receber_nome)],
-            CLASSE: [CallbackQueryHandler(escolher_classe)],
-        },
-        fallbacks=[],
-    )
-    app.add_handler(conv_handler)
+    app.add_handler(ConversationHandler(entry_points=[CommandHandler("start", start)], states={NOME: [MessageHandler(filters.TEXT & ~filters.COMMAND, receber_nome)], CLASSE: [CallbackQueryHandler(escolher_classe)]}, fallbacks=[]))
     app.add_handler(CallbackQueryHandler(start, pattern="^start$"))
     app.add_handler(CallbackQueryHandler(coming_soon.coming_soon, pattern="^coming_soon$"))
     app.add_handler(CallbackQueryHandler(menu_midtheim, pattern="^menu_midtheim$"))
@@ -111,8 +105,7 @@ def main():
     app.add_handler(CallbackQueryHandler(amuleto.selecionar_amuleto, pattern="^(Amuleto[0-9]+|desequipar_amuleto)"))
     app.add_handler(CallbackQueryHandler(arena.menu_arena, pattern="^arena$"))
     app.add_handler(CallbackQueryHandler(combate_rankeado.iniciar_arena_rankeada, pattern="^arena_rankeado$"))
-    app.add_handler(CallbackQueryHandler(combate_amistoso.iniciar_combate_amistoso, pattern="^arena_amistoso$"))
-    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, combate_amistoso.resolver_combate))
+    app.add_handler(ConversationHandler(entry_points=[CallbackQueryHandler(combate_amistoso.iniciar_combate_amistoso, pattern="^arena_amistoso$")], states={combate_amistoso.BUSCA_OPONENTE: [MessageHandler(filters.TEXT & ~filters.COMMAND, combate_amistoso.resolver_combate)]}, fallbacks=[]))
     app.add_handler(CallbackQueryHandler(ranking.mostrar_ranking, pattern="^ranking_arena$"))
     app.add_handler(CallbackQueryHandler(ferreiro.ferreiro, pattern="^ferreiro$"))
     app.add_handler(CallbackQueryHandler(forja.forja, pattern="^forja$"))
@@ -142,6 +135,11 @@ def main():
     app.add_handler(CallbackQueryHandler(aprimoramento.menu_aprimoramento, pattern="^up$"))
     app.add_handler(CallbackQueryHandler(aprimoramento.selecionar_equipamento, pattern="^aprimorar_"))
     app.add_handler(CallbackQueryHandler(aprimoramento.confirmar_aprimoramento, pattern="^1aprimorar_item_"))
+    app.add_handler(CallbackQueryHandler(menu_mercado.menu_mercado, pattern="^mercado$"))
+    app.add_handler(CallbackQueryHandler(menu_venda.menu_venda, pattern="^vender$"))
+    app.add_handler(ConversationHandler(entry_points=[CallbackQueryHandler(vender_item.iniciar_venda_item, pattern="^vender_item$")], states={vender_item.ESCOLHER_ITEM: [CallbackQueryHandler(vender_item.definir_quantidade, pattern="^venderitem_")], vender_item.DEFINIR_QTD: [MessageHandler(filters.TEXT & ~filters.COMMAND, vender_item.definir_valor)], vender_item.DEFINIR_VALOR: [MessageHandler(filters.TEXT & ~filters.COMMAND, vender_item.confirmar_venda)]}, fallbacks=[]))
+    app.add_handler(ConversationHandler(entry_points=[CallbackQueryHandler(vender_equipamento.iniciar_venda_equipamento, pattern="^vender_equipamento$")], states={0: [CallbackQueryHandler(vender_equipamento.escolher_equipamento, pattern="^vender_tipo_")], 1: [CallbackQueryHandler(vender_equipamento.definir_valor_equip, pattern="^vender_eq_")], 2: [MessageHandler(filters.TEXT & ~filters.COMMAND, vender_equipamento.confirmar_venda_equip)]}, fallbacks=[]))
+    app.add_handler(ConversationHandler(entry_points=[CallbackQueryHandler(comprar.menu_compras, pattern="^comprar$")], states={comprar.DIGITAR_ID: [MessageHandler(filters.TEXT & ~filters.COMMAND, comprar.processar_compra)]}, fallbacks=[]))
     app.bot_data["menus"] = {"menu_midtheim": menu_midtheim, "menu_solvindr": menu_solvindr}
     app.run_polling()
 

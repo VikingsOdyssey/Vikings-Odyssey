@@ -26,7 +26,7 @@ if not todos_os_players:
 print(f"\n🎯 {len(todos_os_players)} jogadores serão afetados.")
 
 match acao:
-    case "1" | "2":
+    case "1":
         caminho = input("Caminho do campo (ex: Inventario/Moedas): ")
         valor_raw = input("Valor a ser atribuído (int, str, bool): ")
         try:

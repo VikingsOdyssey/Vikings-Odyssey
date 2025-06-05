@@ -65,7 +65,7 @@ async def confirmar_aprimoramento(update: Update, context: ContextTypes.DEFAULT_
 
     # Nível de forja influencia a chance de sucesso (nível * 10%)
     nivel_forja = perfil_ref.child("Nivel_Forja").get() or 1
-    chance_sucesso = min(90, nivel_forja * 10)
+    chance_sucesso = min(50 + (nivel_forja) * 5, 100)
 
     if tipo_aprimoramento == "nivel":
         joias = inventario_ref.child("Joia_Aperfeicoamento").get() or 0
@@ -123,18 +123,22 @@ def aprimorar_nivel(equipamento: str) -> str:
     nome_match = re.search(r"\] (.*?) \[", restante)
     nome = nome_match.group(1) if nome_match else "Equipamento"
 
-    # Extrai todos os buffs (permite repetição)
-    matches = re.findall(r"([\u2600-\U0001FAFF]+)\+(\d+)", equipamento)
-    novos_buffs = []
-    for emoji, valor in matches:
-        novos_buffs.append(f"{emoji}+{int(valor) + 1}")
+    # Inverte o dicionário para emoji → atributo
+    EMOJI_PARA_CHAVE = {v: k for k, v in EMOJIS_ATRIBUTOS.items()}
 
+    # Extrai buffs usando emojis explícitos do sistema
+    regex_emojis = '|'.join(re.escape(e) for e in EMOJI_PARA_CHAVE)
+    matches = re.findall(rf"({regex_emojis})\+(\d+)", equipamento)
+
+    # Incrementa corretamente mantendo emojis compostos
+    novos_buffs = [f"{emoji}+{int(valor) + 1}" for emoji, valor in matches]
+
+    # Reconstroi a string
     buffs_formatados = ", ".join(novos_buffs)
-
-    # Novo nível
     novo_lvl = int(lvl) + 1
 
     return f"[{durabilidade}] [{qualidade}] {nome} [{novo_lvl}] [{buffs_formatados}]"
+
 
 def aprimorar_qualidade(equipamento: str) -> str:
 

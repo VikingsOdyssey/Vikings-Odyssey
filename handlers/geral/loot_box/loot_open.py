@@ -8,7 +8,6 @@ from firebase_admin import db
 # Estrutura das loot boxes: chave = nome da box no banco, valores = itens e range de quantidade
 LOOT_BOXES = {
     "Loot_cacada": {
-        "Joia_Criacao": (0,1),
         "Madeira": (1, 5),
         "Couro": (1, 5),
         "La": (1, 5),
@@ -65,9 +64,17 @@ async def abrir_lootbox(update: Update, context: ContextTypes.DEFAULT_TYPE):
             ref_inventario.child(item).set(atual + quantidade)
 
     # Mensagem de retorno
+    
     texto = f"📦 <b>Você abriu uma loot box!</b>\n\n"
     for item, qtd in recompensas.items():
-        texto += f"• {item}: +{qtd}\n"
+        match item:
+            case "Joia_Criacao":
+                item_nome = "Joia da Criação"
+            case "Joia_Reparo":
+                item_nome = "Joia de Reparo"
+            case _:
+                item_nome = item
+        texto += f"• {item_nome}: +{qtd}\n"
 
         ref = db.reference(f"{chat_id}")
         perfil = ref.child("Perfil").get()

@@ -20,7 +20,7 @@ async def menu_midtheim(update: Update, context: ContextTypes.DEFAULT_TYPE):
             teclado = InlineKeyboardMarkup([
                 [InlineKeyboardButton("Adm", callback_data="adm")],
                 [InlineKeyboardButton("⚔️ Arena de Valhalla", callback_data="arena")],
-                [InlineKeyboardButton("🪙 Mercado de Skald", callback_data="coming_soon")],
+                [InlineKeyboardButton("🪙 Mercado de Skald", callback_data="mercado")],
                 [InlineKeyboardButton("⚒️ Ferreiro de Brokk", callback_data="ferreiro")],
                 [InlineKeyboardButton("📜 Missões de Yggdrasil", callback_data="coming_soon")],
                 [InlineKeyboardButton("👤 Meu Personagem", callback_data="personagem")],
@@ -30,7 +30,7 @@ async def menu_midtheim(update: Update, context: ContextTypes.DEFAULT_TYPE):
         case _:
             teclado = InlineKeyboardMarkup([
                 [InlineKeyboardButton("⚔️ Arena de Valhalla", callback_data="arena")],
-                [InlineKeyboardButton("🪙 Mercado de Skald", callback_data="coming_soon")],
+                [InlineKeyboardButton("🪙 Mercado de Skald", callback_data="mercado")],
                 [InlineKeyboardButton("⚒️ Ferreiro de Brokk", callback_data="ferreiro")],
                 [InlineKeyboardButton("📜 Missões de Yggdrasil", callback_data="coming_soon")],
                 [InlineKeyboardButton("👤 Meu Personagem", callback_data="personagem")],
